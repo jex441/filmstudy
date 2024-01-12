@@ -9,7 +9,7 @@ import {
 	SafeAreaView,
 	TouchableOpacity,
 } from "react-native";
-
+import Nav from "./Nav";
 function Groups({ navigation }) {
 	const data = [
 		{
@@ -85,6 +85,7 @@ function Groups({ navigation }) {
 
 	return (
 		<SafeAreaView>
+            <Nav />
 			<FlatList
 				data={data}
 				renderItem={({ item }) => (
@@ -156,7 +157,7 @@ function Groups({ navigation }) {
 															}}
 														/>
 													) : (
-														<Text>...and {item.length - 7} others</Text>
+														<Text>...and {item.length - 7}</Text>
 													)}
 												</View>
 											);

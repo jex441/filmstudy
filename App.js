@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { StyleSheet } from "react-native";
+import Nav from "./app/screens/Nav";
 import Login from "./app/screens/Login";
 import Groups from "./app/screens/Groups";
 import SingleGroupView from "./app/screens/SingleGroupView";
@@ -11,14 +12,14 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="Groups" component={Groups} />
-				<Stack.Screen name="Group" component={SingleGroupView} />
-				<Stack.Screen name="CreateNewGroup" component={CreateNewGroup} />
-			</Stack.Navigator>
-		</NavigationContainer>
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="Login" component={Login} />
+					<Stack.Screen name="Groups" component={Groups} />
+					<Stack.Screen name="Group" component={SingleGroupView} />
+					<Stack.Screen name="CreateNewGroup" component={CreateNewGroup} />
+				</Stack.Navigator>
+			</NavigationContainer>
 	);
 }
 
