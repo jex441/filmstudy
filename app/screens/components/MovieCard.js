@@ -9,6 +9,7 @@ import {
 	SafeAreaView,
 } from "react-native";
 import GroupMovieCard from "./GroupMovieCard";
+import colors from "../../config/colors";
 
 function MovieCard({
 	id,
@@ -52,7 +53,9 @@ function MovieCard({
 				<View style={styles.movieCardTextContainer}>
 					<View style={styles.movieTextTitleContainer}>
 						<View>
-							<Text style={styles.title}>{title}</Text>
+							<Text numberOfLines={1} style={styles.title}>
+								{title}
+							</Text>
 						</View>
 						<View>
 							<Text style={styles.year}>{year}</Text>
@@ -115,25 +118,26 @@ const styles = StyleSheet.create({
 		width: "100%",
 	},
 	title: {
-		color: "#333",
+		width: 240,
+		color: colors.dark,
 		lineHeight: 18,
 		fontSize: 18,
 	},
 	year: {
-		color: "#333",
+		color: colors.medium,
 		lineHeight: 20,
 		fontSize: 12,
 	},
 	director: {
 		fontSize: 12,
 		lineHeight: 20,
-		color: "#333",
+		color: colors.medium,
 	},
 	actors: {
 		fontSize: 12,
 		lineHeight: 16,
 		fontWeight: 300,
-		color: "#333",
+		color: colors.medium,
 	},
 	runTimeRatingContainer: {
 		flexDirection: "row",
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 20,
 		fontWeight: 300,
-		color: "#333",
+		color: colors.medium,
 	},
 	movieCardStarContainer: {
 		paddingTop: 4,

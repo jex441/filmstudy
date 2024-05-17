@@ -1,7 +1,10 @@
 import React from "react";
+import { useState } from "react";
 import { FlatList, SafeAreaView, TouchableOpacity } from "react-native";
 import Nav from "./Nav";
 import MovieCard from "./components/MovieCard";
+
+import AppForm from "./components/Forms/AppForm";
 
 import SearchBar from "./components/SearchBar";
 const searchResultsData = [
@@ -118,17 +121,23 @@ const searchResultsData = [
 			"In the Falangist Spain of 1944, the bookish young stepdaughter of a sadistic army officer escapes into an eerie but captivating fantasy world.",
 	},
 ];
+
 function Search({ navigation, route }) {
+	const [searchValue, setSearchValue] = useState("");
+
+	const changeHandler = (e) => {
+		e.preventDefault();
+		setSearchValue(e.target.value);
+	};
+
 	return (
 		<SafeAreaView>
 			<Nav />
-			<SearchBar />
+			<SearchBar searchValue={searchValue} changeHandler={changeHandler} />
 			<FlatList
 				data={searchResultsData}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item, index }) => {
-					console.log(item.director);
-
 					return (
 						<TouchableOpacity
 							onPress={() =>

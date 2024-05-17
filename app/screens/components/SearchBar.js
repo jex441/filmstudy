@@ -2,12 +2,16 @@ import React from "react";
 import { View, StyleSheet, Text, Image, TextInput } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function SearchBar({ otherProps }) {
+import colors from "../../config/colors";
+
+function SearchBar({ otherProps, changeHandler, searchValue }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.input}>
-				<MaterialCommunityIcons name="magnify" size={30} color={"#333"} />
+				<MaterialCommunityIcons name="magnify" size={30} color={colors.dark} />
 				<TextInput
+					onChange={changeHandler}
+					value={searchValue}
 					placeholder="Start typing a title to search...."
 					style={{
 						width: "100%",
@@ -24,17 +28,19 @@ const styles = StyleSheet.create({
 	container: {
 		width: "100%",
 		paddingHorizontal: 20,
-		marginVertical: 20,
+		height: 70,
+		backgroundColor: "#fff",
+		position: "fixed",
 	},
 	input: {
 		backgroundColor: "#fff",
 		padding: 10,
 		width: "100%",
 		borderRadius: 30,
-		borderColor: "#333",
+		borderColor: colors.medium,
 		flexDirection: "row",
 		justifyContent: "flex-start",
-		borderColor: "#333",
+		borderColor: colors.medium,
 		borderWidth: 1,
 		alignContent: "center",
 	},

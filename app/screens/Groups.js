@@ -10,6 +10,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 
+import colors from "../config/colors";
 import Badges from "./components/Badges";
 import Nav from "./Nav";
 import data from "../../data";
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
 		width: "60%",
 	},
 	createGroupText: {
-		color: "#333",
+		color: colors.primary,
 		fontSize: 22,
 	},
 });

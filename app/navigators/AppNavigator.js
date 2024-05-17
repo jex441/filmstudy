@@ -6,6 +6,7 @@ import data from "../../data";
 import HomeNavigator from "./HomeNavigator";
 import SearchNavigator from "./SearchNavigator";
 
+import colors from "../config/colors";
 function AppNavigator(props) {
 	const Tab = createBottomTabNavigator();
 
@@ -17,7 +18,11 @@ function AppNavigator(props) {
 					headerShown: false,
 					tabBarLabel: "",
 					tabBarIcon: ({ color, size }) => (
-						<MaterialCommunityIcons name={"home"} size={40} color={"#333"} />
+						<MaterialCommunityIcons
+							name={"format-list-bulleted-square"}
+							size={40}
+							color={colors.primary}
+						/>
 					),
 				}}
 				component={HomeNavigator}
@@ -29,7 +34,11 @@ function AppNavigator(props) {
 					headerShown: false,
 					tabBarLabel: "",
 					tabBarIcon: ({ color, size }) => (
-						<MaterialCommunityIcons name={"magnify"} size={40} color={"#333"} />
+						<MaterialCommunityIcons
+							name={"magnify"}
+							size={40}
+							color={colors.primary}
+						/>
 					),
 				}}
 				component={SearchNavigator}

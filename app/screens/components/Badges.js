@@ -8,7 +8,7 @@ import {
 	Image,
 	SafeAreaView,
 } from "react-native";
-
+import colors from "../../config/colors";
 function Badges({ users, number, size = 25 }) {
 	let count = 0;
 	return (
@@ -33,7 +33,7 @@ function Badges({ users, number, size = 25 }) {
 							<Text
 								style={{
 									fontSize: 12,
-									color: "#333",
+									color: colors.medium,
 									fontWeight: 300,
 								}}
 							>

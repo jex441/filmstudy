@@ -9,6 +9,8 @@ import {
 	SafeAreaView,
 } from "react-native";
 import Badges from "./Badges";
+import colors from "../../config/colors";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 function GroupMovieCard({ pickedBy, watchedOn, groupRating, ratedBy, tags }) {
 	const stars = (n) => {
@@ -68,20 +70,20 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 	},
 	text: {
-		color: "#333",
+		color: colors.medium,
 		fontSize: 12,
 	},
 	pickedBy: {
 		fontSize: 12,
 		lineHeight: 20,
-		color: "#333",
+		color: colors.medium,
 		marginRight: 10,
 	},
 	watchedOn: {
 		fontSize: 12,
 		lineHeight: 16,
 		fontWeight: 300,
-		color: "#333",
+		color: colors.medium,
 	},
 	ratedBy: {
 		paddingTop: 4,
