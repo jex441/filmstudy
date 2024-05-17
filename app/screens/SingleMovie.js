@@ -1,11 +1,8 @@
 import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import Nav from "./Nav";
 import MovieCard from "./components/MovieCard";
 import Backdrop from "./components/Backdrop";
-import GroupMovieCard from "./components/GroupMovieCard";
 import AppButton from "./components/Forms/AppButton";
 import colors from "../config/colors";
 
@@ -27,10 +24,18 @@ function SingleGroupMovie({ route, navigation }) {
 		watchedOn,
 		tags,
 		viewed,
+		addHandler,
+		item,
 	} = route.params;
+
+	// const warning = () => {
+	// 	alert(
+	// 		"Are you sure you would like to remove this from your watch history?"
+	// 	);
+	// };
+
 	return (
 		<ScrollView>
-			<Nav />
 			<Backdrop backdrop={backdrop} />
 			<MovieCard
 				key={id}
@@ -52,31 +57,17 @@ function SingleGroupMovie({ route, navigation }) {
 				<Text style={styles.overview}>{overview}</Text>
 			</View>
 			<View style={styles.actions}>
-				{viewed && <AppButton title="Mark as Watched" />}
-				{/* <View style={styles.iconWrapper}>
-					<MaterialCommunityIcons name="check" size={70} 
-							color={colors.primary}
+				{viewed ? (
+					<AppButton
+						pressHandler={(item) => addHandler(item)}
+						title="Remove from list"
 					/>
-					<View style={styles.iconText}>
-						<Text>Mark as Watched</Text>
-					</View>
-				</View> */}
-				{/* <View style={styles.iconWrapper}>
-					<MaterialCommunityIcons name="menu" size={70} 
-							color={colors.primary}
+				) : (
+					<AppButton
+						pressHandler={(item) => addHandler(item)}
+						title="Mark as Watched"
 					/>
-					<View style={styles.iconText}>
-						<Text>Test</Text>
-					</View>
-				</View> */}
-				{/* <View style={styles.iconWrapper}>
-					<MaterialCommunityIcons name="email" size={70} 
-							color={colors.primary}
-					/>
-					<View style={styles.iconText}>
-						<Text>Test</Text>
-					</View>
-				</View> */}
+				)}
 			</View>
 		</ScrollView>
 	);

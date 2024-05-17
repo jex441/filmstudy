@@ -1,13 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { FlatList, SafeAreaView, TouchableOpacity } from "react-native";
-import Nav from "./Nav";
+
 import MovieCard from "./components/MovieCard";
-
-import AppForm from "./components/Forms/AppForm";
-
 import SearchBar from "./components/SearchBar";
-const searchResultsData = [
+
+const initialSearchResultsData = [
 	{
 		id: 1,
 		title: "The Godfather",
@@ -124,6 +122,20 @@ const searchResultsData = [
 
 function Search({ navigation, route }) {
 	const [searchValue, setSearchValue] = useState("");
+	const [searchResultsData, setSearchResultsData] = useState(
+		initialSearchResultsData
+	);
+
+	const addHandler = (movie) => {
+		const newArray = searchResultsData.push(movie);
+	};
+
+	const removeHandler = (removedMovie) => {
+		const newArray = searchResultsData.filter(
+			(movie) => movie.id !== removedMovie.id
+		);
+		setSearchResultsData(newArray);
+	};
 
 	const changeHandler = (e) => {
 		e.preventDefault();
@@ -132,7 +144,6 @@ function Search({ navigation, route }) {
 
 	return (
 		<SafeAreaView>
-			<Nav />
 			<SearchBar searchValue={searchValue} changeHandler={changeHandler} />
 			<FlatList
 				data={searchResultsData}
@@ -157,6 +168,8 @@ function Search({ navigation, route }) {
 									ratedBy: item.ratedBy,
 									tags: item.tags,
 									viewed: index % 2 === 0 ? true : false,
+									item: item,
+									addHandler,
 								})
 							}
 						>

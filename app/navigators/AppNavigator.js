@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import data from "../../data";
 import HomeNavigator from "./HomeNavigator";
 import SearchNavigator from "./SearchNavigator";
+import AccountNavigator from "./AccountNavigator";
 
 import colors from "../config/colors";
 function AppNavigator(props) {
@@ -42,6 +43,22 @@ function AppNavigator(props) {
 					),
 				}}
 				component={SearchNavigator}
+				initialParams={{ data: data }}
+			/>
+			<Tab.Screen
+				name="Account"
+				options={{
+					headerShown: false,
+					tabBarLabel: "",
+					tabBarIcon: ({ color, size }) => (
+						<MaterialCommunityIcons
+							name={"account"}
+							size={40}
+							color={colors.primary}
+						/>
+					),
+				}}
+				component={AccountNavigator}
 				initialParams={{ data: data }}
 			/>
 		</Tab.Navigator>

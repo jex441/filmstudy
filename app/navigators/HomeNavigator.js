@@ -3,10 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import SingleGroupView from "../screens/SingleGroupView";
 import SingleMovie from "../screens/SingleMovie";
-import Groups from "../screens/Groups";
-import CreateNewGroup from "../screens/CreateNewGroup";
 
-function HomeNavigator(props) {
+function HomeNavigator({ route }) {
 	const Stack = createNativeStackNavigator();
 	return (
 		<Stack.Navigator>

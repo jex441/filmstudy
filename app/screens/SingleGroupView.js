@@ -6,9 +6,19 @@ import data from "../../data";
 
 function SingleGroupView({ navigation, route }) {
 	const history = data.user.groups[0].history;
+
+	const addHandler = (movie) => {
+		// const newArray = searchResultsData.push(movie);
+	};
+
+	const removeHandler = (removedMovie) => {
+		// const newArray = searchResultsData.filter(
+		// 	(movie) => movie.id !== removedMovie.id
+		// );
+	};
+
 	return (
 		<SafeAreaView>
-			<Nav />
 			<FlatList
 				data={history}
 				keyExtractor={(item) => item.id}
@@ -32,6 +42,8 @@ function SingleGroupView({ navigation, route }) {
 									groupRating: item.groupRating,
 									ratedBy: item.ratedBy,
 									tags: item.tags,
+									addHandler: addHandler,
+									removeHandler: removeHandler,
 								})
 							}
 						>
