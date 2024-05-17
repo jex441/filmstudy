@@ -8,6 +8,7 @@ import {
 	Image,
 	SafeAreaView,
 } from "react-native";
+import GroupMovieCard from "./GroupMovieCard";
 
 function MovieCard({
 	id,
@@ -18,6 +19,11 @@ function MovieCard({
 	actors,
 	runtime,
 	rating,
+	viewed,
+	pickedBy,
+	groupRating,
+	watchedOn,
+	ratedBy,
 }) {
 	const stars = (n) => {
 		let array = [];
@@ -36,33 +42,47 @@ function MovieCard({
 	const runtimeString = `${Math.floor(runtime / 60)} HR ${Math.floor(
 		runtime % 60
 	)}`;
-	const actorsString = actors.join(", ");
+	const actorsString = actors && actors.join(", ");
 	return (
-		<View style={styles.movieCard}>
-			<View style={styles.movieCardImageContainer}>
-				<Image source={{ uri: poster }} style={styles.movieCardImage} />
-			</View>
-			<View style={styles.movieCardTextContainer}>
-				<View style={styles.movieTextTitleContainer}>
-					<View>
-						<Text style={styles.title}>{title}</Text>
+		<>
+			<View style={styles.movieCard}>
+				<View style={styles.movieCardImageContainer}>
+					<Image source={{ uri: poster }} style={styles.movieCardImage} />
+				</View>
+				<View style={styles.movieCardTextContainer}>
+					<View style={styles.movieTextTitleContainer}>
+						<View>
+							<Text style={styles.title}>{title}</Text>
+						</View>
+						<View>
+							<Text style={styles.year}>{year}</Text>
+						</View>
 					</View>
 					<View>
-						<Text style={styles.year}>{year}</Text>
+						<Text style={styles.director}>{director}</Text>
 					</View>
+					<View>
+						<Text numberOfLines={1} style={styles.actors}>
+							{actorsString}
+						</Text>
+					</View>
+					<View style={styles.runTimeRatingContainer}>
+						<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
+						<View>
+							<Text style={styles.runtime}>{runtimeString}</Text>
+						</View>
+					</View>
+					{viewed && (
+						<GroupMovieCard
+							pickedBy={pickedBy}
+							watchedOn={watchedOn}
+							ratedBy={ratedBy}
+							groupRating={groupRating}
+						/>
+					)}
 				</View>
-				<View>
-					<Text style={styles.director}>{director}</Text>
-				</View>
-				<View>
-					<Text style={styles.actors}>{actorsString}</Text>
-				</View>
-				<View>
-					<Text style={styles.runtime}>{runtimeString}</Text>
-				</View>
-				<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
 			</View>
-		</View>
+		</>
 	);
 }
 
@@ -111,9 +131,14 @@ const styles = StyleSheet.create({
 	},
 	actors: {
 		fontSize: 12,
-		lineHeight: 20,
+		lineHeight: 16,
 		fontWeight: 300,
 		color: "#333",
+	},
+	runTimeRatingContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
 	},
 	runtime: {
 		fontSize: 12,
@@ -122,9 +147,7 @@ const styles = StyleSheet.create({
 		color: "#333",
 	},
 	movieCardStarContainer: {
-		height: 60,
-		paddingTop: 8,
-		width: "100%",
+		paddingTop: 4,
 		flexDirection: "row",
 		justifyContent: "flex-start",
 	},

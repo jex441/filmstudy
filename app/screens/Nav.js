@@ -33,8 +33,9 @@ function Nav(props) {
 
 const styles = StyleSheet.create({
 	nav: {
+		position: "fixed",
 		backgroundColor: "#FFF",
-		height: 50,
+		height: 60,
 		padding: 10,
 		justifyContent: "space-between",
 		flexDirection: "row",

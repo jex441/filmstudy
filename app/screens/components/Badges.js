@@ -9,16 +9,16 @@ import {
 	SafeAreaView,
 } from "react-native";
 
-function Badges({ ratedBy, number, size = 25 }) {
+function Badges({ users, number, size = 25 }) {
 	let count = 0;
 	return (
 		<FlatList
-			data={ratedBy}
+			data={users}
 			renderItem={({ item, index }) => {
 				if (index >= number) {
 					count++;
 				}
-				if (index > (number + 1)) {
+				if (index > number + 1) {
 					return;
 				}
 				if (index > number) {
@@ -26,8 +26,8 @@ function Badges({ ratedBy, number, size = 25 }) {
 						<View
 							style={{
 								height: size,
-								flexDirection: "column-reverse",
-								left: index * (size - 2),
+								justifyContent: "center",
+								left: number * size,
 							}}
 						>
 							<Text

@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button } from "react-native";
 
-function Login({ navigation }) {
+function Login({ navigation, route }) {
 	return (
 		<View style={styles.container}>
 			<Button
