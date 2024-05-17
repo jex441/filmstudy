@@ -2,29 +2,41 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { StyleSheet } from "react-native";
-import Login from "./app/screens/Login";
-import Groups from "./app/screens/Groups";
-import SingleGroupView from "./app/screens/SingleGroupView";
-import CreateNewGroup from "./app/screens/CreateNewGroup";
+
+import { StateProvider } from "./state";
+
+import AppNavigator from "./app/navigators/AppNavigator";
+import LoggedOutNavigator from "./app/navigators/LoggedOutNavigator";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+	const isLoggedIn = true;
+	const initialState = {
+		theme: {
+			primary: "dodgerblue",
+			backgroundColor: "#FFF",
+			color: "#333",
+		},
+	};
+	const reducer = (state, action) => {
+		switch (action.type) {
+			case "changeTheme":
+				return {
+					...state,
+					theme: action.newTheme,
+				};
+
+			default:
+				return state;
+		}
+	};
+
 	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="Groups" component={Groups} />
-				<Stack.Screen name="Group" component={SingleGroupView} />
-				<Stack.Screen name="CreateNewGroup" component={CreateNewGroup} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		<StateProvider initialState={initialState} reducer={reducer}>
+			<NavigationContainer>
+				{isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
+			</NavigationContainer>
+		</StateProvider>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-	},
-});
