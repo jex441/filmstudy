@@ -4,13 +4,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../../config/colors";
 
-function SearchBar({ otherProps, changeHandler, searchValue }) {
+function SearchBar({ changeHandler, searchValue, otherProps }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.input}>
 				<MaterialCommunityIcons name="magnify" size={30} color={colors.dark} />
 				<TextInput
-					onChange={changeHandler}
+					onChangeText={(val) => changeHandler(val)}
 					value={searchValue}
 					placeholder="Start typing a title to search...."
 					style={{
