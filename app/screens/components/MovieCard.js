@@ -65,11 +65,9 @@ function MovieCard({
 							<Text style={styles.year}>{year}</Text>
 						</View>
 					</View>
-					{director && (
-						<View>
-							<Text style={styles.director}>{director}</Text>
-						</View>
-					)}
+					<View>
+						<Text style={styles.director}>{director[0]?.name}</Text>
+					</View>
 					{actors && (
 						<View>
 							<Text numberOfLines={1} style={styles.actors}>

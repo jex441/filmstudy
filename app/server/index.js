@@ -51,7 +51,7 @@ app.post("/api/search/movies", async (req, res, next) => {
 	const fullRes = await Promise.all(
 		detailsRes.map(async (movie) => {
 			let cast = [];
-			let crew = [];
+			let director = [];
 			await axios
 				.get(
 					`https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`,
@@ -62,14 +62,16 @@ app.post("/api/search/movies", async (req, res, next) => {
 					}
 				)
 				.then((res) => {
-					cast = res.data.cast;
-					crew = res.data.crew;
+					cast = res.data.cast.slice(0, 5);
+					director = res.data.crew.filter(
+						(person) => person.job === "Director"
+					);
 				})
 				.catch((err) => {
 					return err;
 				});
 			movie.cast = cast;
-			movie.crew = crew;
+			movie.director = director;
 			return movie;
 		})
 	);

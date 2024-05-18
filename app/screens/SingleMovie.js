@@ -33,7 +33,6 @@ function SingleGroupMovie({ route, navigation }) {
 	// 		"Are you sure you would like to remove this from your watch history?"
 	// 	);
 	// };
-
 	return (
 		<ScrollView>
 			<Backdrop backdrop={backdrop} />
