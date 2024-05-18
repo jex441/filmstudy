@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
 		height: "100%",
 	},
 	movieCardImage: {
-		width: 60,
-		height: 100,
+		width: 74,
+		height: 110,
 	},
 	movieCardTextContainer: {
 		padding: 10,
