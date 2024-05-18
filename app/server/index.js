@@ -2,9 +2,12 @@ const express = require("express");
 const helmet = require("helmet");
 const compression = require("compression");
 const axios = require("axios");
+
 require("dotenv").config();
 
-const { API_KEY } = process.env;
+const { db } = require("./db");
+const { API_KEY, NODE_ENV } = process.env;
+
 const app = express();
 
 app.use(express.static("public"));
@@ -12,6 +15,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(compression());
 
+app.get("/auth", (req, res, next) => {});
 app.post("/api/search/movies", async (req, res, next) => {
 	if (!req.body.title) return res.send(400);
 	const url = `https://api.themoviedb.org/3/search/movie?query=${req.body.title}&include_adult=false&language=en-US&page=1`;
@@ -78,6 +82,24 @@ app.post("/api/search/movies", async (req, res, next) => {
 
 	return res.send({ status: 200, data: fullRes });
 });
+
+// Connect to database
+const syncDB = async () => {
+	NODE_ENV === "development" && (await db.sync({ force: true }));
+	console.log("All models were synchronized successfully.");
+};
+
+const authenticateDB = async () => {
+	try {
+		await db.authenticate();
+		console.log("Connection has been established successfully.");
+	} catch (error) {
+		console.error("Unable to connect to the database:", error);
+	}
+};
+
+syncDB();
+authenticateDB();
 
 const port = process.env.PORT || 9001;
 app.listen(port, function () {
