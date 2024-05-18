@@ -8,7 +8,6 @@ export default function AppForm({
 	onSubmit,
 	validationSchema,
 	children,
-	submitButton,
 }) {
 	return (
 		<Formik
@@ -19,7 +18,7 @@ export default function AppForm({
 			{() => (
 				<>
 					{children}
-					{submitButton && <SubmitButton title={title} />}
+					<SubmitButton title={title} />
 				</>
 			)}
 		</Formik>

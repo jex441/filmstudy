@@ -1,15 +1,24 @@
+import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StateProvider } from "./state";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 
 import AppNavigator from "./app/navigators/AppNavigator";
 import LoggedOutNavigator from "./app/navigators/LoggedOutNavigator";
-
-const Stack = createNativeStackNavigator();
+import authApi from "./app/api/authApi";
 
 export default function App() {
-	const isLoggedIn = true;
+	let isLoggedIn = false;
+
+	const meHandler = async () => {
+		const user = await authApi.me();
+		console.log(user);
+	};
+
+	useEffect(() => {
+		meHandler();
+	}, []);
+
 	const initialState = {
 		theme: {
 			primary: "dodgerblue",
@@ -31,19 +40,10 @@ export default function App() {
 	};
 
 	return (
-		<ClerkProvider
-			publishableKey={Constants.expoConfig.extra.clerkPublishableKey}
-		>
-			<StateProvider initialState={initialState} reducer={reducer}>
-				<NavigationContainer>
-					<SignedIn>
-						<AppNavigator />
-					</SignedIn>
-					<SignedOut>
-						<LoggedOutNavigator />
-					</SignedOut>
-				</NavigationContainer>
-			</StateProvider>
-		</ClerkProvider>
+		<StateProvider initialState={initialState} reducer={reducer}>
+			<NavigationContainer>
+				{isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
+			</NavigationContainer>
+		</StateProvider>
 	);
 }

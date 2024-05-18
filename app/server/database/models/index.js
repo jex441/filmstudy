@@ -1,5 +1,5 @@
-import User from "./user.js";
-import Movie from "./movie.js";
+const { Movie } = require("./movie");
+const { User } = require("./user");
 
 Movie.belongsToMany(User, {
 	as: "movies",
@@ -15,4 +15,4 @@ User.belongsToMany(Movie, {
 	through: "User_Movies",
 });
 
-export { User, Movie };
+module.exports = { User, Movie };
