@@ -97,10 +97,11 @@ function MovieCard({
 
 const styles = StyleSheet.create({
 	movieCard: {
-		height: 120,
+		height: 130,
 		flexDirection: "row",
 		width: "100%",
 		backgroundColor: "#FFF",
+		paddingVertical: 5,
 	},
 	movieCardImageContainer: {
 		justifyContent: "center",
