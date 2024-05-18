@@ -9,21 +9,18 @@ import {
 	SafeAreaView,
 } from "react-native";
 
-function Backdrop({ path, video }) {
-	if (video) {
-		// code for video
-		return (
-			<View style={styles}>
-				<Image source={{ uri: path }} />
-			</View>
-		);
-	}
+function Backdrop({ backdrop, video }) {
+	console.log(backdrop);
 	return (
 		<View style={styles}>
-			<Image source={{ uri: path }} />
+			<Image
+				source={{ uri: "https://image.tmdb.org/t/p/original" + backdrop }}
+				style={{ width: "100%", height: 200 }}
+			/>
 		</View>
 	);
 }
+
 const styles = StyleSheet.create({
 	position: "fixed",
 	zIndex: "-1",

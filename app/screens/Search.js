@@ -34,6 +34,7 @@ function Search({ navigation, route }) {
 
 	useEffect(() => {
 		if (searchValue?.length > 0) searchMoviesHandler(searchValue);
+		else setSearchResultsData([]);
 	}, [searchValue]);
 
 	return (
@@ -52,6 +53,7 @@ function Search({ navigation, route }) {
 									navigation.navigate("SingleMovie", {
 										key: item.id,
 										poster: item.poster_path,
+										backdrop: item.backdrop_path,
 										title: item.original_title,
 										year: item.release_date.slice(0, 4),
 										pickedBy: item.pickedBy,
@@ -59,7 +61,7 @@ function Search({ navigation, route }) {
 										overview: item.overview,
 										rating: item.vote_average,
 										runtime: item.runtime,
-										actors: item.actors,
+										actors: item.cast,
 										director: item.director,
 										groupRating: item.groupRating,
 										ratedBy: item.ratedBy,
@@ -72,14 +74,15 @@ function Search({ navigation, route }) {
 							>
 								<MovieCard
 									key={item.id}
-									poster={item.poster}
+									poster={item.poster_path}
+									backdrop={item.backdrop_path}
 									title={item.title}
 									year={item.release_date.slice(0, 4)}
 									director={item.director}
-									actors={item.actors}
+									actors={item.cast}
 									pickedBy={item.pickedBy}
 									watchedOn={item.watchedOn}
-									rating={item.rating}
+									rating={item.vote_average}
 									runtime={item.runtime}
 									groupRating={item.groupRating}
 									ratedBy={item.ratedBy}

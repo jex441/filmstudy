@@ -43,12 +43,16 @@ function MovieCard({
 	const runtimeString = `${Math.floor(runtime / 60)} HR ${Math.floor(
 		runtime % 60
 	)}`;
-	const actorsString = actors && actors.join(", ");
+	const cast = actors.map((actor) => actor.name);
+	const actorsString = cast && cast.join(", ");
 	return (
 		<>
 			<View style={styles.movieCard}>
 				<View style={styles.movieCardImageContainer}>
-					<Image source={{ uri: poster }} style={styles.movieCardImage} />
+					<Image
+						source={{ uri: "https://image.tmdb.org/t/p/original/" + poster }}
+						style={styles.movieCardImage}
+					/>
 				</View>
 				<View style={styles.movieCardTextContainer}>
 					<View style={styles.movieTextTitleContainer}>
@@ -61,14 +65,18 @@ function MovieCard({
 							<Text style={styles.year}>{year}</Text>
 						</View>
 					</View>
-					<View>
-						<Text style={styles.director}>{director}</Text>
-					</View>
-					<View>
-						<Text numberOfLines={1} style={styles.actors}>
-							{actorsString}
-						</Text>
-					</View>
+					{director && (
+						<View>
+							<Text style={styles.director}>{director}</Text>
+						</View>
+					)}
+					{actors && (
+						<View>
+							<Text numberOfLines={1} style={styles.actors}>
+								{actorsString}
+							</Text>
+						</View>
+					)}
 					<View style={styles.runTimeRatingContainer}>
 						<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
 						<View>
@@ -104,7 +112,7 @@ const styles = StyleSheet.create({
 		height: "100%",
 	},
 	movieCardImage: {
-		width: 80,
+		width: 60,
 		height: 100,
 	},
 	movieCardTextContainer: {
@@ -134,6 +142,7 @@ const styles = StyleSheet.create({
 		color: colors.medium,
 	},
 	actors: {
+		width: 240,
 		fontSize: 12,
 		lineHeight: 16,
 		fontWeight: 300,
