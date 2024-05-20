@@ -29,9 +29,6 @@ const signup = async (username, password) => {
 			"Content-Type": "application/json",
 		},
 	});
-	if (res.data.isLoggedIn) {
-		me();
-	}
 	return res.data;
 };
 
