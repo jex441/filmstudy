@@ -12,7 +12,7 @@ const session = require("express-session");
 const { db } = require("./database/db");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({ db });
-const { User } = require("./database/models");
+const { User, Movie } = require("./database/models");
 
 const { API_KEY, NODE_ENV } = process.env;
 
@@ -38,25 +38,33 @@ app.use(passport.session());
 
 passport.use(
 	new LocalStrategy(async function (username, password, done) {
-		await User.findOne({ where: { username: username } }, function (err, user) {
-			if (err) {
-				return done(err);
+		await User.findOne(
+			{
+				where: { username: username },
+			},
+			function (err, user) {
+				if (err) {
+					return done(err);
+				}
+				if (!user) {
+					return done(null, false);
+				}
+				if (!user.verifyPassword(password)) {
+					return done(null, false);
+				}
+				console.log("usere", user);
+				return done(null, user);
 			}
-			if (!user) {
-				return done(null, false);
-			}
-			if (!user.verifyPassword(password)) {
-				return done(null, false);
-			}
-			return done(null, user);
-		});
+		);
 	})
 );
 
 passport.serializeUser(function (user, cb) {
+	console.log(user);
 	cb(null, {
 		id: user.id,
 		username: user.username,
+		list: user.list,
 	});
 });
 
@@ -165,6 +173,115 @@ app.get("/api/auth/me", async function (req, res) {
 		return res.send({ isLoggedIn: true, ...req.user });
 	} else {
 		return res.send({ isLoggedIn: false });
+	}
+});
+
+app.get("/api/users/:id", async (req, res) => {
+	try {
+		let data = await User.findOne({
+			where: { id: req.params.id },
+			include: { model: Movie, as: "movies" },
+		});
+		const json = JSON.stringify(data);
+		let user = JSON.parse(json);
+
+		const detailsRes = await Promise.all(
+			user.movies.map(
+				async (movie) =>
+					await axios
+						.get(
+							`https://api.themoviedb.org/3/movie/${movie.webID}?language=en-US`,
+							{
+								headers: {
+									Authorization: `Bearer ${API_KEY}`,
+								},
+							}
+						)
+						.then((res) => {
+							return res.data;
+						})
+						.catch((err) => {
+							return err;
+						})
+			)
+		);
+
+		const fullRes = await Promise.all(
+			detailsRes.map(async (movie) => {
+				let cast = [];
+				let director = [];
+				await axios
+					.get(
+						`https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`,
+						{
+							headers: {
+								Authorization: `Bearer ${API_KEY}`,
+							},
+						}
+					)
+					.then((res) => {
+						cast = res.data.cast.slice(0, 5);
+						director = res.data.crew.filter(
+							(person) => person.job === "Director"
+						);
+					})
+					.catch((err) => {
+						return err;
+					});
+				movie.cast = cast;
+				movie.director = director;
+				return movie;
+			})
+		);
+		user.list = fullRes;
+		return res.send(user);
+	} catch (error) {
+		console.log(error);
+		return res.send({ status: 500, data: error });
+	}
+});
+
+app.post("/api/users/:id/movies", async (req, res) => {
+	const {
+		id,
+		poster,
+		title,
+		year,
+		director,
+		actors,
+		rating,
+		runtime,
+		backdrop,
+		overview,
+	} = req.body;
+	try {
+		const movie = await Movie.findOrCreate({
+			where: { webID: id },
+			defaults: {
+				webID: id,
+				// title: title,
+				// poster: poster,
+				// overview: overview,
+				// director: director[0]?.name,
+				// cast: actors[0]?.name,
+				// rating: 2,
+				// runtime: runtime,
+				// backdrop: backdrop,
+				// year: year,
+			},
+		});
+		const user = await User.findByPk(req.params.id);
+		// add movie to user, through table for rating
+		const movieData = await Movie.findOne({ where: { webID: id } });
+		const json = JSON.stringify(movieData);
+		const newMovie = JSON.parse(json);
+		console.log("moviedata", newMovie);
+		await user.addMovie(newMovie.id);
+
+		return res.send({ status: 200 });
+	} catch (error) {
+		console.log(error);
+		return res.send({ status: 500, data: error });
 	}
 });
 

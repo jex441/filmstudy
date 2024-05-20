@@ -5,8 +5,10 @@ import MovieCard from "./components/MovieCard";
 import Backdrop from "./components/Backdrop";
 import AppButton from "./components/Forms/AppButton";
 import colors from "../config/colors";
-
+import usersApi from "../api/users";
+import { useStore } from "../store";
 function SingleGroupMovie({ route, navigation }) {
+	const { user } = useStore();
 	const {
 		id,
 		poster,
@@ -56,17 +58,10 @@ function SingleGroupMovie({ route, navigation }) {
 				<Text style={styles.overview}>{overview}</Text>
 			</View>
 			<View style={styles.actions}>
-				{viewed ? (
-					<AppButton
-						pressHandler={(item) => addHandler(item)}
-						title="Remove from list"
-					/>
-				) : (
-					<AppButton
-						pressHandler={(item) => addHandler(item)}
-						title="Mark as Watched"
-					/>
-				)}
+				<AppButton
+					pressHandler={async () => await usersApi.addMovie(user.id, item)}
+					title="Add to Watched List"
+				/>
 			</View>
 		</ScrollView>
 	);

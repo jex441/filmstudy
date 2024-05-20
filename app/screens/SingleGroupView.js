@@ -1,16 +1,25 @@
 import React from "react";
+import { useEffect } from "react";
+import { useStore } from "../store";
+import { useQuery } from "@tanstack/react-query";
+
 import { FlatList, SafeAreaView, TouchableOpacity } from "react-native";
-import Nav from "./Nav";
 import MovieCard from "./components/MovieCard";
-import data from "../../data";
+import usersApi from "../api/users";
 
 function SingleGroupView({ navigation, route }) {
-	const history = data.user.groups[0].history;
+	const { user, setUser } = useStore();
 
-	const addHandler = (movie) => {
-		// const newArray = searchResultsData.push(movie);
+	const getUserHandler = async () => {
+		let { data } = await usersApi.getUser(user.id);
+		console.log("DATA", data);
+		setUser({ ...user, list: data.list });
 	};
 
+	useEffect(() => {
+		getUserHandler();
+	}, []);
+	console.log("USER:", user.list);
 	const removeHandler = (removedMovie) => {
 		// const newArray = searchResultsData.filter(
 		// 	(movie) => movie.id !== removedMovie.id
@@ -20,48 +29,51 @@ function SingleGroupView({ navigation, route }) {
 	return (
 		<SafeAreaView>
 			<FlatList
-				data={history}
+				data={user.list}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
-					console.log(item.title);
 					return (
 						<TouchableOpacity
 							onPress={() =>
 								navigation.navigate("SingleMovie", {
-									key: item.id,
-									poster: item.poster,
-									title: item.title,
-									director: item.director,
-									rating: item.rating,
-									actors: item.actors,
-									runtime: item.runtime,
-									year: item.year,
-									overview: item.overview,
+									key: item.webID,
+									poster: item.poster_path,
+									backdrop: item.backdrop_path,
+									title: item.original_title,
+									year: item.release_date.slice(0, 4),
 									pickedBy: item.pickedBy,
 									watchedOn: item.watchedOn,
+									overview: item.overview,
+									rating: item.vote_average,
+									runtime: item.runtime,
+									actors: item.cast,
+									director: item.director,
 									groupRating: item.groupRating,
 									ratedBy: item.ratedBy,
 									tags: item.tags,
+									viewed: false,
+									item: item,
 									addHandler: addHandler,
 									removeHandler: removeHandler,
 								})
 							}
 						>
 							<MovieCard
-								key={item.id}
-								poster={item.poster}
+								key={item.webIDid}
+								poster={item.poster_path}
+								backdrop={item.backdrop_path}
 								title={item.title}
-								year={item.year}
-								runtime={item.runtime}
-								rating={item.rating}
+								year={item.release_date.slice(0, 4)}
 								director={item.director}
-								actors={item.actors}
-								viewed={false}
+								actors={item.cast}
 								pickedBy={item.pickedBy}
 								watchedOn={item.watchedOn}
+								rating={item.vote_average}
+								runtime={item.runtime}
 								groupRating={item.groupRating}
 								ratedBy={item.ratedBy}
 								tags={item.tags}
+								viewed={false}
 							/>
 						</TouchableOpacity>
 					);

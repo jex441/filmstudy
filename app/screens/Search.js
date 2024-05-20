@@ -66,7 +66,7 @@ function Search({ navigation, route }) {
 										groupRating: item.groupRating,
 										ratedBy: item.ratedBy,
 										tags: item.tags,
-										viewed: index % 2 === 0 ? true : false,
+										viewed: false,
 										item: item,
 										addHandler,
 									})

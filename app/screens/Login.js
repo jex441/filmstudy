@@ -54,7 +54,6 @@ function Login(props) {
 				title="Continue"
 				pressHandler={async () => {
 					const data = await authApi.signup(username, password);
-					console.log("data", data);
 					if (data.isLoggedIn) {
 						setUser(data);
 					}

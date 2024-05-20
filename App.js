@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useStore } from "./app/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import AppNavigator from "./app/navigators/AppNavigator";
 import LoggedOutNavigator from "./app/navigators/LoggedOutNavigator";
@@ -21,10 +22,13 @@ export default function App() {
 	useEffect(() => {
 		meHandler();
 	}, []);
+	const queryClient = new QueryClient();
 
 	return (
-		<NavigationContainer>
-			{user.isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
-		</NavigationContainer>
+		<QueryClientProvider client={queryClient}>
+			<NavigationContainer>
+				{user.isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
+			</NavigationContainer>
+		</QueryClientProvider>
 	);
 }
