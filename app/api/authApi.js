@@ -6,6 +6,7 @@ const me = async () => {
 			"Content-Type": "application/json",
 		},
 	});
+	console.log("me called:", res.data);
 	return res.data;
 };
 
@@ -20,7 +21,7 @@ const login = async ({ username, password }) => {
 	return res.data;
 };
 
-const signup = async () => {
+const signup = async (username, password) => {
 	const res = await client.post("/auth/signup", {
 		username: username,
 		password: password,
@@ -28,6 +29,9 @@ const signup = async () => {
 			"Content-Type": "application/json",
 		},
 	});
+	if (res.data.isLoggedIn) {
+		me();
+	}
 	return res.data;
 };
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StateProvider } from "./state";
@@ -8,11 +8,17 @@ import LoggedOutNavigator from "./app/navigators/LoggedOutNavigator";
 import authApi from "./app/api/authApi";
 
 export default function App() {
-	let isLoggedIn = false;
+	const [state, setState] = useState({
+		isLoggedIn: false,
+		username: "",
+		movieList: "",
+	});
 
 	const meHandler = async () => {
 		const user = await authApi.me();
-		console.log(user);
+		if (user.isLoggedIn) {
+			setState({ ...state, isLoggedIn: true, username: user.username });
+		}
 	};
 
 	useEffect(() => {
@@ -42,7 +48,7 @@ export default function App() {
 	return (
 		<StateProvider initialState={initialState} reducer={reducer}>
 			<NavigationContainer>
-				{isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
+				{state.isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
 			</NavigationContainer>
 		</StateProvider>
 	);

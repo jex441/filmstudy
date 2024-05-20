@@ -22,7 +22,7 @@ function Login({ navigation, route }) {
 				initialValues={{ username: "", password: "" }}
 				onSubmit={(values) => authApi.login(values)}
 				validationSchema={validationSchema}
-				title="Log In"
+				title="Continue as a guest"
 			>
 				<AppFormComponent
 					name="username"
@@ -47,10 +47,6 @@ function Login({ navigation, route }) {
 					}}
 				/>
 			</AppForm>
-			<AppButton
-				title="Continue"
-				pressHandler={() => authApi.signup(username, password)}
-			/>
 		</View>
 	);
 }

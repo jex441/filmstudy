@@ -2,22 +2,26 @@ const express = require("express");
 const helmet = require("helmet");
 const compression = require("compression");
 const axios = require("axios");
-
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const session = require("express-session");
 require("dotenv").config();
+const session = require("express-session");
 
 const { db } = require("./database/db");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const store = new SequelizeStore({ db });
 const { User } = require("./database/models");
 
 const { API_KEY, NODE_ENV } = process.env;
 
 const app = express();
 
-app.use(express.static("public"));
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
+app.use(bodyParser.json());
 app.use(compression());
 
 app.use(
@@ -25,28 +29,16 @@ app.use(
 		secret: "keyboard cat",
 		resave: false,
 		saveUninitialized: false,
-		cookie: { secure: true },
+		store: store,
 	})
 );
-
-// passport.serializeUser(function (user, cb) {
-// 	process.nextTick(function () {
-// 		return cb(null, user.id);
-// 	});
-// });
-
-// passport.deserializeUser(function (id, cb) {
-// 	db.get("SELECT * FROM users WHERE id = ?", [id], function (err, user) {
-// 		if (err) {
-// 			return cb(err);
-// 		}
-// 		return cb(null, user);
-// 	});
-// });
+app.use(passport.initialize());
+app.use(passport.session());
+// app.use(passport.authenticate("session"));
 
 passport.use(
-	new LocalStrategy(function (username, password, done) {
-		User.findOne({ username: username }, function (err, user) {
+	new LocalStrategy(async function (username, password, done) {
+		await User.findOne({ where: { username: username } }, function (err, user) {
 			if (err) {
 				return done(err);
 			}
@@ -61,19 +53,34 @@ passport.use(
 	})
 );
 
-app.get("/api/auth/me", async function (req, res) {
-	console.log("boom");
-	if (req.user) return res.send({ isLoggedIn: true, ...req.user });
-	else {
-		return res.send({ isLoggedIn: false });
-	}
+passport.serializeUser(function (user, cb) {
+	cb(null, {
+		id: user.id,
+		username: user.username,
+	});
 });
 
-app.post("/signup", async function (req, res) {
-	await User.create({
-		username: req.body.username,
-		password: req.body.password,
+passport.deserializeUser((user, done) => {
+	process.nextTick(function () {
+		return done(null, user);
 	});
+});
+
+app.post("/api/auth/signup", async function (req, res, next) {
+	// generate on the fly:
+	const { username, password } = req.body;
+	try {
+		const userData = await User.create({
+			username: username,
+			password: password,
+		});
+		const userJSON = JSON.stringify(userData);
+		const user = JSON.parse(userJSON, null, 2);
+		return req.login(user, () => res.send({ isLoggedIn: true, ...user }));
+	} catch (error) {
+		console.log(error);
+		return res.send({ isLoggedIn: false, data: error });
+	}
 });
 
 app.post(
@@ -149,6 +156,16 @@ app.post("/api/search/movies", async (req, res, next) => {
 	);
 
 	return res.send({ status: 200, data: fullRes });
+});
+
+app.get("/api/auth/me", async function (req, res) {
+	console.log("/auth/me", req.session?.passport);
+	if (req.user) {
+		console.log("req.user", req.user);
+		return res.send({ isLoggedIn: true, ...req.user });
+	} else {
+		return res.send({ isLoggedIn: false });
+	}
 });
 
 // Connect to database
