@@ -17,7 +17,7 @@ function MovieCard({
 	title,
 	year,
 	director,
-	actors,
+	cast,
 	runtime,
 	rating,
 	viewed,
@@ -40,11 +40,6 @@ function MovieCard({
 		return array;
 	};
 
-	const runtimeString = `${Math.floor(runtime / 60)} HR ${Math.floor(
-		runtime % 60
-	)}`;
-	const cast = actors.map((actor) => actor.name);
-	const actorsString = cast && cast.join(", ");
 	return (
 		<>
 			<View style={styles.movieCard}>
@@ -66,19 +61,19 @@ function MovieCard({
 						</View>
 					</View>
 					<View>
-						<Text style={styles.director}>{director[0]?.name}</Text>
+						<Text style={styles.director}>{director}</Text>
 					</View>
-					{actors && (
+					{cast && (
 						<View>
 							<Text numberOfLines={1} style={styles.actors}>
-								{actorsString}
+								{cast}
 							</Text>
 						</View>
 					)}
 					<View style={styles.runTimeRatingContainer}>
 						<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
 						<View>
-							<Text style={styles.runtime}>{runtimeString}</Text>
+							<Text style={styles.runtime}>{runtime}</Text>
 						</View>
 					</View>
 					{viewed && (

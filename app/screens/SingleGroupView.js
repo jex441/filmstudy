@@ -40,20 +40,19 @@ function SingleGroupView({ navigation, route }) {
 									poster: item.poster_path,
 									backdrop: item.backdrop_path,
 									title: item.original_title,
-									year: item.release_date.slice(0, 4),
+									year: item.release_date,
 									pickedBy: item.pickedBy,
 									watchedOn: item.watchedOn,
 									overview: item.overview,
 									rating: item.vote_average,
 									runtime: item.runtime,
-									actors: item.cast,
+									cast: item.cast,
 									director: item.director,
 									groupRating: item.groupRating,
 									ratedBy: item.ratedBy,
 									tags: item.tags,
 									viewed: false,
 									item: item,
-									addHandler: addHandler,
 									removeHandler: removeHandler,
 								})
 							}
@@ -63,9 +62,9 @@ function SingleGroupView({ navigation, route }) {
 								poster={item.poster_path}
 								backdrop={item.backdrop_path}
 								title={item.title}
-								year={item.release_date.slice(0, 4)}
+								year={item.release_date}
 								director={item.director}
-								actors={item.cast}
+								cast={item.cast}
 								pickedBy={item.pickedBy}
 								watchedOn={item.watchedOn}
 								rating={item.vote_average}

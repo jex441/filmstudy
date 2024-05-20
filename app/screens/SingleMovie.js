@@ -15,7 +15,7 @@ function SingleGroupMovie({ route, navigation }) {
 		title,
 		year,
 		director,
-		actors,
+		cast,
 		rating,
 		runtime,
 		backdrop,
@@ -44,7 +44,7 @@ function SingleGroupMovie({ route, navigation }) {
 				title={title}
 				year={year}
 				director={director}
-				actors={actors}
+				cast={cast}
 				rating={rating}
 				runtime={runtime}
 				groupRating={groupRating}

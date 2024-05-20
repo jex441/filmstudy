@@ -137,8 +137,9 @@ app.post("/api/search/movies", async (req, res, next) => {
 
 	const fullRes = await Promise.all(
 		detailsRes.map(async (movie) => {
-			let cast = [];
-			let director = [];
+			let castData = [];
+			let directorData = [];
+
 			await axios
 				.get(
 					`https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`,
@@ -149,16 +150,28 @@ app.post("/api/search/movies", async (req, res, next) => {
 					}
 				)
 				.then((res) => {
-					cast = res.data.cast.slice(0, 5);
-					director = res.data.crew.filter(
+					castData = res.data.cast.slice(0, 5);
+					directorData = res.data.crew.filter(
 						(person) => person.job === "Director"
 					);
 				})
 				.catch((err) => {
 					return err;
 				});
+
+			movie.release_date = movie.release_date.slice(0, 4);
+			let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
+				movie.runtime % 60
+			)}`;
+
+			let cast = castData.map((actor) => actor.name).join(", ");
+			director = directorData[0]?.name;
+
+			movie.runtime = runtime;
 			movie.cast = cast;
 			movie.director = director;
+
+			console.log(cast, director, directorData, movie.cast, movie.director);
 			return movie;
 		})
 	);
@@ -208,8 +221,9 @@ app.get("/api/users/:id", async (req, res) => {
 
 		const fullRes = await Promise.all(
 			detailsRes.map(async (movie) => {
-				let cast = [];
-				let director = [];
+				let castData = [];
+				let directorData = [];
+
 				await axios
 					.get(
 						`https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`,
@@ -220,19 +234,32 @@ app.get("/api/users/:id", async (req, res) => {
 						}
 					)
 					.then((res) => {
-						cast = res.data.cast.slice(0, 5);
-						director = res.data.crew.filter(
+						castData = res.data.cast.slice(0, 5);
+						directorData = res.data.crew.filter(
 							(person) => person.job === "Director"
 						);
 					})
 					.catch((err) => {
 						return err;
 					});
+
+				movie.release_date = movie.release_date.slice(0, 4);
+				let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
+					movie.runtime % 60
+				)}`;
+
+				let cast = castData.map((actor) => actor.name).join(", ");
+				director = directorData[0]?.name;
+
+				movie.runtime = runtime;
 				movie.cast = cast;
 				movie.director = director;
+
+				console.log(cast, director, directorData, movie.cast, movie.director);
 				return movie;
 			})
 		);
+
 		user.list = fullRes;
 		return res.send(user);
 	} catch (error) {
