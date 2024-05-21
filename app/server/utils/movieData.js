@@ -48,7 +48,7 @@ const movieData = async function movieData(array) {
 					return err;
 				});
 
-			movie.year = movie?.release_date;
+			movie.year = movie?.release_date && movie?.release_date.slice(0, 4);
 			let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
 				movie.runtime % 60
 			)}`;

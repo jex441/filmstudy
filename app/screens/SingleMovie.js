@@ -17,7 +17,7 @@ import { useStore } from "../store";
 function SingleGroupMovie({ route, navigation }) {
 	const { user } = useStore();
 	const { id, movie } = route.params;
-	const { overview, backdrop_path } = movie;
+	const { overview, backdrop_path, watchList, watched } = movie;
 	return (
 		<ScrollView>
 			<Backdrop backdrop={backdrop_path} />
@@ -26,26 +26,34 @@ function SingleGroupMovie({ route, navigation }) {
 				<Text style={styles.overview}>{overview}</Text>
 			</View>
 			<View style={styles.actions}>
-				<BadgeButton
-					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
-					color={colors.dark}
-					name="check"
-					label="Mark as Watched"
-				/>
-				<BadgeButton
-					pressHandler={async () =>
-						await usersApi.addMovieToWatchList(user.id, movie)
-					}
-					color={colors.dark}
-					name="menu"
-					label="Add to Watch List"
-				/>
-				{/* <BadgeButton
-					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
-					color={colors.dark}
-					name="close"
-					label="Remove"
-				/> */}
+				{!watched && (
+					<BadgeButton
+						pressHandler={async () => await usersApi.addMovie(user.id, movie)}
+						color={colors.dark}
+						name="check"
+						label="Mark as Watched"
+					/>
+				)}
+				{!watched && !watchList && (
+					<BadgeButton
+						pressHandler={async () =>
+							await usersApi.addMovieToWatchList(user.id, movie)
+						}
+						color={colors.dark}
+						name="menu"
+						label="Add to Watch List"
+					/>
+				)}
+				{watchList && (
+					<BadgeButton
+						pressHandler={async () =>
+							await usersApi.removeMovie(user.id, movie)
+						}
+						color={colors.dark}
+						name="close"
+						label={`Remove from my list`}
+					/>
+				)}
 			</View>
 		</ScrollView>
 	);

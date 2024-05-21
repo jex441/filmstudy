@@ -172,6 +172,7 @@ app.post("/api/users/:id/movies/watched", async (req, res) => {
 			{
 				webID: id,
 				watched: true,
+				watchList: true,
 				rating: 777,
 			},
 			{ where: { UserId: user.id, MovieId: newMovie.id } }
@@ -199,6 +200,7 @@ app.post("/api/users/:id/movies/list", async (req, res) => {
 		await user.addMovie(newMovie.id);
 		await User_Movie.update(
 			{
+				webID: id,
 				watchList: true,
 				watched: false,
 			},
@@ -211,7 +213,7 @@ app.post("/api/users/:id/movies/list", async (req, res) => {
 	}
 });
 
-app.delete("/api/users/:id/movies", async (req, res) => {
+app.put("/api/users/:id/movies", async (req, res) => {
 	const { id } = req.body;
 	try {
 		const movie = await Movie.findOne({

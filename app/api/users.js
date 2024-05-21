@@ -24,7 +24,7 @@ const addMovieToWatchList = async (userID, movie) => {
 };
 
 const removeMovie = async (userID, movie) => {
-	const { data } = await client.delete(`/users/${userID}/movies`, {
+	const { data } = await client.put(`/users/${userID}/movies`, {
 		id: movie.id,
 	});
 	return { data: data };
