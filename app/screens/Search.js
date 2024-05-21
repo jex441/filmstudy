@@ -52,41 +52,14 @@ function Search({ navigation, route }) {
 								onPress={() =>
 									navigation.navigate("SingleMovie", {
 										key: item.id,
-										poster: item.poster_path,
-										backdrop: item.backdrop_path,
-										title: item.original_title,
-										year: item.release_date,
-										pickedBy: item.pickedBy,
-										watchedOn: item.watchedOn,
-										overview: item.overview,
-										rating: item.vote_average,
-										runtime: item.runtime,
-										cast: item.cast,
-										director: item.director,
-										groupRating: item.groupRating,
-										ratedBy: item.ratedBy,
-										tags: item.tags,
-										viewed: false,
-										item: item,
+										movie: item,
 										addHandler,
 									})
 								}
 							>
 								<MovieCard
 									key={item.id}
-									poster={item.poster_path}
-									backdrop={item.backdrop_path}
-									title={item.title}
-									year={item.release_date}
-									director={item.director}
-									cast={item.cast}
-									pickedBy={item.pickedBy}
-									watchedOn={item.watchedOn}
-									rating={item.vote_average}
-									runtime={item.runtime}
-									groupRating={item.groupRating}
-									ratedBy={item.ratedBy}
-									tags={item.tags}
+									movie={item}
 									viewed={index % 2 === 0 ? true : false}
 								/>
 							</TouchableOpacity>

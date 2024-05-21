@@ -11,21 +11,22 @@ import {
 import GroupMovieCard from "./GroupMovieCard";
 import colors from "../../config/colors";
 
-function MovieCard({
-	id,
-	poster,
-	title,
-	year,
-	director,
-	cast,
-	runtime,
-	rating,
-	viewed,
-	pickedBy,
-	groupRating,
-	watchedOn,
-	ratedBy,
-}) {
+function MovieCard({ movie }) {
+	const {
+		poster_path,
+		title,
+		year,
+		director,
+		cast,
+		runtime,
+		vote_average,
+		viewed,
+		pickedBy,
+		groupRating,
+		watchedOn,
+		ratedBy,
+	} = movie;
+
 	const stars = (n) => {
 		let array = [];
 		for (let i = 0; i < n; i++) {
@@ -45,7 +46,9 @@ function MovieCard({
 			<View style={styles.movieCard}>
 				<View style={styles.movieCardImageContainer}>
 					<Image
-						source={{ uri: "https://image.tmdb.org/t/p/original/" + poster }}
+						source={{
+							uri: "https://image.tmdb.org/t/p/original/" + poster_path,
+						}}
 						style={styles.movieCardImage}
 					/>
 				</View>
@@ -71,7 +74,9 @@ function MovieCard({
 						</View>
 					)}
 					<View style={styles.runTimeRatingContainer}>
-						<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
+						<View style={styles.movieCardStarContainer}>
+							{stars(vote_average)}
+						</View>
 						<View>
 							<Text style={styles.runtime}>{runtime}</Text>
 						</View>

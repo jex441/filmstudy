@@ -159,7 +159,7 @@ app.post("/api/search/movies", async (req, res, next) => {
 					return err;
 				});
 
-			movie.release_date = movie.release_date.slice(0, 4);
+			movie.year = movie.release_date.slice(0, 4);
 			let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
 				movie.runtime % 60
 			)}`;
@@ -243,7 +243,7 @@ app.get("/api/users/:id", async (req, res) => {
 						return err;
 					});
 
-				movie.release_date = movie.release_date.slice(0, 4);
+				movie.year = movie.release_date.slice(0, 4);
 				let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
 					movie.runtime % 60
 				)}`;

@@ -37,43 +37,12 @@ function SingleGroupView({ navigation, route }) {
 							onPress={() =>
 								navigation.navigate("SingleMovie", {
 									key: item.webID,
-									poster: item.poster_path,
-									backdrop: item.backdrop_path,
-									title: item.original_title,
-									year: item.release_date,
-									pickedBy: item.pickedBy,
-									watchedOn: item.watchedOn,
-									overview: item.overview,
-									rating: item.vote_average,
-									runtime: item.runtime,
-									cast: item.cast,
-									director: item.director,
-									groupRating: item.groupRating,
-									ratedBy: item.ratedBy,
-									tags: item.tags,
-									viewed: false,
-									item: item,
+									movie: item,
 									removeHandler: removeHandler,
 								})
 							}
 						>
-							<MovieCard
-								key={item.webIDid}
-								poster={item.poster_path}
-								backdrop={item.backdrop_path}
-								title={item.title}
-								year={item.release_date}
-								director={item.director}
-								cast={item.cast}
-								pickedBy={item.pickedBy}
-								watchedOn={item.watchedOn}
-								rating={item.vote_average}
-								runtime={item.runtime}
-								groupRating={item.groupRating}
-								ratedBy={item.ratedBy}
-								tags={item.tags}
-								viewed={false}
-							/>
+							<MovieCard key={item.webIDid} movie={item} viewed={false} />
 						</TouchableOpacity>
 					);
 				}}
