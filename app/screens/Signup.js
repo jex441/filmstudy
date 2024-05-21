@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet, Button, TextInput } from "react-native";
 import * as Yup from "yup";
 import { generate, count } from "random-words";
-import { useStore } from "../store";
 
 import AppButton from "./components/Forms/AppButton";
 import AppForm from "./components/Forms/AppForm";
@@ -10,9 +9,7 @@ import AppFormComponent from "./components/Forms/AppFormComponent";
 import colors from "../config/colors";
 import authApi from "../api/authApi";
 
-function Login(props) {
-	const { user, setUser } = useStore();
-	console.log("state", user);
+function Login({ navigation, route }) {
 	const validationSchema = Yup.object().shape({
 		username: Yup.string().required().label("Username"),
 		password: Yup.string().required().min(4).label("Password"),
@@ -25,7 +22,7 @@ function Login(props) {
 				initialValues={{ username: "", password: "" }}
 				onSubmit={(values) => authApi.login(values)}
 				validationSchema={validationSchema}
-				title="Log In"
+				title="Continue as a guest"
 			>
 				<AppFormComponent
 					name="username"
@@ -50,15 +47,6 @@ function Login(props) {
 					}}
 				/>
 			</AppForm>
-			<AppButton
-				title="Continue"
-				pressHandler={async () => {
-					const data = await authApi.signup(username, password);
-					if (data.isLoggedIn) {
-						setUser(data);
-					}
-				}}
-			/>
 		</View>
 	);
 }

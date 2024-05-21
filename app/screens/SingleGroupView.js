@@ -1,68 +1,41 @@
 import React from "react";
+import { useEffect } from "react";
+import { useStore } from "../store";
+import { useQuery } from "@tanstack/react-query";
+
 import { FlatList, SafeAreaView, TouchableOpacity } from "react-native";
-import Nav from "./Nav";
 import MovieCard from "./components/MovieCard";
-import data from "../../data";
+import usersApi from "../api/users";
 
 function SingleGroupView({ navigation, route }) {
-	const history = data.user.groups[0].history;
+	const { user, setUser } = useStore();
 
-	const addHandler = (movie) => {
-		// const newArray = searchResultsData.push(movie);
+	const getUserHandler = async () => {
+		let { data } = await usersApi.getUser(user.id);
+		setUser({ ...user, list: data.list });
 	};
-
-	const removeHandler = (removedMovie) => {
-		// const newArray = searchResultsData.filter(
-		// 	(movie) => movie.id !== removedMovie.id
-		// );
-	};
+	console.log(user.list);
+	useEffect(() => {
+		getUserHandler();
+	}, []);
 
 	return (
 		<SafeAreaView>
 			<FlatList
-				data={history}
+				data={user.list}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
-					console.log(item.title);
+					console.log(item);
 					return (
 						<TouchableOpacity
 							onPress={() =>
 								navigation.navigate("SingleMovie", {
-									key: item.id,
-									poster: item.poster,
-									title: item.title,
-									director: item.director,
-									rating: item.rating,
-									actors: item.actors,
-									runtime: item.runtime,
-									year: item.year,
-									overview: item.overview,
-									pickedBy: item.pickedBy,
-									watchedOn: item.watchedOn,
-									groupRating: item.groupRating,
-									ratedBy: item.ratedBy,
-									tags: item.tags,
-									addHandler: addHandler,
-									removeHandler: removeHandler,
+									key: item.webID,
+									movie: item,
 								})
 							}
 						>
-							<MovieCard
-								key={item.id}
-								poster={item.poster}
-								title={item.title}
-								year={item.year}
-								runtime={item.runtime}
-								rating={item.rating}
-								director={item.director}
-								actors={item.actors}
-								viewed={false}
-								pickedBy={item.pickedBy}
-								watchedOn={item.watchedOn}
-								groupRating={item.groupRating}
-								ratedBy={item.ratedBy}
-								tags={item.tags}
-							/>
+							<MovieCard key={item.webID} movie={item} viewed={false} />
 						</TouchableOpacity>
 					);
 				}}

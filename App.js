@@ -1,39 +1,34 @@
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StateProvider } from "./state";
+import { useStore } from "./app/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import AppNavigator from "./app/navigators/AppNavigator";
 import LoggedOutNavigator from "./app/navigators/LoggedOutNavigator";
-
-const Stack = createNativeStackNavigator();
+import authApi from "./app/api/authApi";
 
 export default function App() {
-	const isLoggedIn = true;
-	const initialState = {
-		theme: {
-			primary: "dodgerblue",
-			backgroundColor: "#FFF",
-			color: "#333",
-		},
-	};
-	const reducer = (state, action) => {
-		switch (action.type) {
-			case "changeTheme":
-				return {
-					...state,
-					theme: action.newTheme,
-				};
+	const { user, setUser } = useStore();
 
-			default:
-				return state;
+	console.log("app", user);
+
+	const meHandler = async () => {
+		const user = await authApi.me();
+		if (user.isLoggedIn) {
+			setUser(user);
 		}
 	};
 
+	useEffect(() => {
+		meHandler();
+	}, []);
+	const queryClient = new QueryClient();
+
 	return (
-		<StateProvider initialState={initialState} reducer={reducer}>
+		<QueryClientProvider client={queryClient}>
 			<NavigationContainer>
-				{isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
+				{user.isLoggedIn ? <AppNavigator /> : <LoggedOutNavigator />}
 			</NavigationContainer>
-		</StateProvider>
+		</QueryClientProvider>
 	);
 }

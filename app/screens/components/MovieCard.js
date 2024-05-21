@@ -11,21 +11,22 @@ import {
 import GroupMovieCard from "./GroupMovieCard";
 import colors from "../../config/colors";
 
-function MovieCard({
-	id,
-	poster,
-	title,
-	year,
-	director,
-	actors,
-	runtime,
-	rating,
-	viewed,
-	pickedBy,
-	groupRating,
-	watchedOn,
-	ratedBy,
-}) {
+function MovieCard({ movie }) {
+	const {
+		poster_path,
+		title,
+		year,
+		director,
+		cast,
+		runtime,
+		vote_average,
+		viewed,
+		pickedBy,
+		groupRating,
+		watchedOn,
+		ratedBy,
+	} = movie;
+
 	const stars = (n) => {
 		let array = [];
 		for (let i = 0; i < n; i++) {
@@ -40,17 +41,14 @@ function MovieCard({
 		return array;
 	};
 
-	const runtimeString = `${Math.floor(runtime / 60)} HR ${Math.floor(
-		runtime % 60
-	)}`;
-	const cast = actors.map((actor) => actor.name);
-	const actorsString = cast && cast.join(", ");
 	return (
 		<>
 			<View style={styles.movieCard}>
 				<View style={styles.movieCardImageContainer}>
 					<Image
-						source={{ uri: "https://image.tmdb.org/t/p/original/" + poster }}
+						source={{
+							uri: "https://image.tmdb.org/t/p/original/" + poster_path,
+						}}
 						style={styles.movieCardImage}
 					/>
 				</View>
@@ -66,19 +64,21 @@ function MovieCard({
 						</View>
 					</View>
 					<View>
-						<Text style={styles.director}>{director[0]?.name}</Text>
+						<Text style={styles.director}>{director}</Text>
 					</View>
-					{actors && (
+					{cast && (
 						<View>
 							<Text numberOfLines={1} style={styles.actors}>
-								{actorsString}
+								{cast}
 							</Text>
 						</View>
 					)}
 					<View style={styles.runTimeRatingContainer}>
-						<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
+						<View style={styles.movieCardStarContainer}>
+							{stars(vote_average)}
+						</View>
 						<View>
-							<Text style={styles.runtime}>{runtimeString}</Text>
+							<Text style={styles.runtime}>{runtime}</Text>
 						</View>
 					</View>
 					{viewed && (

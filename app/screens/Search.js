@@ -10,16 +10,6 @@ function Search({ navigation, route }) {
 	const [searchValue, setSearchValue] = useState("");
 	const [searchResultsData, setSearchResultsData] = useState([]);
 	const [searching, setSearching] = useState(false);
-	const addHandler = (movie) => {
-		const newArray = searchResultsData.push(movie);
-	};
-
-	const removeHandler = (removedMovie) => {
-		const newArray = searchResultsData.filter(
-			(movie) => movie.id !== removedMovie.id
-		);
-		setSearchResultsData(newArray);
-	};
 
 	const changeHandler = (v) => {
 		setSearchValue(v);
@@ -52,43 +42,11 @@ function Search({ navigation, route }) {
 								onPress={() =>
 									navigation.navigate("SingleMovie", {
 										key: item.id,
-										poster: item.poster_path,
-										backdrop: item.backdrop_path,
-										title: item.original_title,
-										year: item.release_date.slice(0, 4),
-										pickedBy: item.pickedBy,
-										watchedOn: item.watchedOn,
-										overview: item.overview,
-										rating: item.vote_average,
-										runtime: item.runtime,
-										actors: item.cast,
-										director: item.director,
-										groupRating: item.groupRating,
-										ratedBy: item.ratedBy,
-										tags: item.tags,
-										viewed: index % 2 === 0 ? true : false,
-										item: item,
-										addHandler,
+										movie: item,
 									})
 								}
 							>
-								<MovieCard
-									key={item.id}
-									poster={item.poster_path}
-									backdrop={item.backdrop_path}
-									title={item.title}
-									year={item.release_date.slice(0, 4)}
-									director={item.director}
-									actors={item.cast}
-									pickedBy={item.pickedBy}
-									watchedOn={item.watchedOn}
-									rating={item.vote_average}
-									runtime={item.runtime}
-									groupRating={item.groupRating}
-									ratedBy={item.ratedBy}
-									tags={item.tags}
-									viewed={index % 2 === 0 ? true : false}
-								/>
+								<MovieCard key={item.id} movie={item} />
 							</TouchableOpacity>
 						);
 					}}
