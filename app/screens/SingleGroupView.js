@@ -20,7 +20,7 @@ function SingleGroupView({ navigation, route }) {
 		let { data } = await usersApi.getUser(user.id);
 		setUser({ ...user, list: data.list });
 	};
-	console.log(user.list);
+
 	useEffect(() => {
 		getUserHandler();
 	}, []);

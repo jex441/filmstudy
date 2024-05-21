@@ -164,9 +164,9 @@ app.post("/api/users/:id/movies/watched", async (req, res) => {
 				webID: id,
 			},
 		});
-		const user = await User.findByPk(req.params.id);
-		const movieData = await Movie.findOne({ where: { webID: id } });
-		const json = JSON.stringify(movieData);
+		let user = await User.findByPk(req.params.id);
+		const newMovieData = await Movie.findOne({ where: { webID: id } });
+		const json = JSON.stringify(newMovieData);
 		const newMovie = JSON.parse(json);
 		await user.addMovie(newMovie.id);
 		await User_Movie.update(
@@ -178,7 +178,18 @@ app.post("/api/users/:id/movies/watched", async (req, res) => {
 			},
 			{ where: { UserId: user.id, MovieId: newMovie.id } }
 		);
-		return res.send({ status: 200 });
+
+		let moviesData = await User_Movie.findAll({
+			where: { UserId: req.params.id },
+		});
+		const moviesDataJson = JSON.stringify(moviesData);
+		let movies = JSON.parse(moviesDataJson);
+		let array = movies.map((movie) => {
+			movie.id = movie.webID;
+			return movie;
+		});
+		const resData = await movieData(array);
+		return res.send(resData);
 	} catch (error) {
 		console.log(error);
 		return res.send({ status: 500, data: error });

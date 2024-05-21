@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import GroupMovieCard from "./GroupMovieCard";
 import colors from "../../config/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function MovieCard({ movie }) {
 	const {
@@ -32,18 +33,29 @@ function MovieCard({ movie }) {
 
 	const stars = (n) => {
 		let array = [];
-		for (let i = 0; i < n; i++) {
-			array.push(
-				<Image
-					key={i}
-					source={require("../../assets/icons/starfilled.png")}
-					style={styles.movieCardStar}
-				/>
-			);
+		for (let i = 0; i < 5; i++) {
+			if (i <= n - 1) {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.medium}
+					/>
+				);
+			} else {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.light}
+					/>
+				);
+			}
 		}
 		return array;
 	};
-
 	return (
 		<>
 			<View style={styles.movieCard}>
@@ -66,8 +78,13 @@ function MovieCard({ movie }) {
 							<Text style={styles.year}>{year}</Text>
 						</View>
 					</View>
-					<View>
-						<Text style={styles.director}>{director}</Text>
+					<View style={styles.justifyBetween}>
+						<View>
+							<Text style={styles.director}>{director}</Text>
+						</View>
+						<View>
+							<Text style={styles.runtime}>{runtime}</Text>
+						</View>
 					</View>
 					{cast && (
 						<View>
@@ -79,9 +96,6 @@ function MovieCard({ movie }) {
 					<View style={styles.runTimeRatingContainer}>
 						<View style={styles.movieCardStarContainer}>
 							{stars(vote_average)}
-						</View>
-						<View>
-							<Text style={styles.runtime}>{runtime}</Text>
 						</View>
 					</View>
 					{watched && <GroupMovieCard movie={movie} />}
@@ -131,13 +145,17 @@ const styles = StyleSheet.create({
 		lineHeight: 20,
 		fontSize: 12,
 	},
+	justifyBetween: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+	},
 	director: {
 		fontSize: 12,
 		lineHeight: 20,
 		color: colors.medium,
 	},
 	actors: {
-		width: 240,
+		width: 250,
 		fontSize: 12,
 		lineHeight: 16,
 		fontWeight: 300,

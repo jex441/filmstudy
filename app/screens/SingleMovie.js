@@ -23,7 +23,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 function SingleGroupMovie({ route, navigation }) {
 	const [visible, setVisible] = useState(false);
 	const [errorText, setErrorText] = useState("");
-	const { user } = useStore();
+	const { user, setUser } = useStore();
 	const { id, movie } = route.params;
 	const { overview, backdrop_path, watchList, watched, rating } = movie;
 	const stars = [1, 2, 3, 4, 5];
@@ -41,15 +41,20 @@ function SingleGroupMovie({ route, navigation }) {
 			setErrorText("You must select at least 1 star.");
 			return;
 		}
-		await usersApi.addMovie(user.id, {
-			...movie,
-			rating: userRating,
-		});
+		await usersApi
+			.addMovie(user.id, {
+				...movie,
+				rating: userRating,
+			})
+			.then((res) => {
+				console.log("do leet code", res.data);
+				setUser({ ...user, list: res.data });
+			});
 		setVisible(false);
 	};
 
 	return (
-		<ScrollView>
+		<Screen>
 			<Backdrop backdrop={backdrop_path} />
 			<MovieCard key={id} movie={movie} />
 			<View>
@@ -132,7 +137,7 @@ function SingleGroupMovie({ route, navigation }) {
 					</Screen>
 				</Modal>
 			</View>
-		</ScrollView>
+		</Screen>
 	);
 }
 const styles = StyleSheet.create({

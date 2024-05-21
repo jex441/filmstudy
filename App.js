@@ -10,8 +10,6 @@ import authApi from "./app/api/authApi";
 export default function App() {
 	const { user, setUser } = useStore();
 
-	console.log("app", user);
-
 	const meHandler = async () => {
 		const user = await authApi.me();
 		if (user.isLoggedIn) {
@@ -22,6 +20,7 @@ export default function App() {
 	useEffect(() => {
 		meHandler();
 	}, []);
+
 	const queryClient = new QueryClient();
 
 	return (

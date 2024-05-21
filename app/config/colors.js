@@ -6,4 +6,5 @@ export default {
 	dark: "#0c0c0c",
 	danger: "#ff5252",
 	white: "#FFF",
+	amber: "#F59E0B",
 };

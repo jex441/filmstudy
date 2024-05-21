@@ -10,20 +10,31 @@ import {
 } from "react-native";
 import Badges from "./Badges";
 import colors from "../../config/colors";
-
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 function GroupMovieCard({ movie }) {
 	const { watched, rating } = movie;
 	const stars = (n) => {
 		let array = [];
-		for (let i = 0; i < n; i++) {
-			array.push(
-				<Image
-					key={i}
-					source={require("../../assets/icons/starfilled.png")}
-					style={styles.movieCardStar}
-				/>
-			);
+		for (let i = 0; i < 5; i++) {
+			if (i <= n - 1) {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.amber}
+					/>
+				);
+			} else {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.light}
+					/>
+				);
+			}
 		}
 		return array;
 	};
@@ -31,11 +42,8 @@ function GroupMovieCard({ movie }) {
 	return (
 		<>
 			<View style={styles.container}>
-				<View style={styles.checkContainer}>
-					<MaterialCommunityIcons name="check" />
-				</View>
 				<View style={styles.textContainer}>
-					<Text style={styles.text}>WATCHED</Text>
+					<Text style={styles.text}>Your Rating:</Text>
 					<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
 					{/* <View>
 						<Text style={styles.pickedBy}>
