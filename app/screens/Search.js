@@ -10,16 +10,6 @@ function Search({ navigation, route }) {
 	const [searchValue, setSearchValue] = useState("");
 	const [searchResultsData, setSearchResultsData] = useState([]);
 	const [searching, setSearching] = useState(false);
-	const addHandler = (movie) => {
-		const newArray = searchResultsData.push(movie);
-	};
-
-	const removeHandler = (removedMovie) => {
-		const newArray = searchResultsData.filter(
-			(movie) => movie.id !== removedMovie.id
-		);
-		setSearchResultsData(newArray);
-	};
 
 	const changeHandler = (v) => {
 		setSearchValue(v);
@@ -53,15 +43,10 @@ function Search({ navigation, route }) {
 									navigation.navigate("SingleMovie", {
 										key: item.id,
 										movie: item,
-										addHandler,
 									})
 								}
 							>
-								<MovieCard
-									key={item.id}
-									movie={item}
-									viewed={index % 2 === 0 ? true : false}
-								/>
+								<MovieCard key={item.id} movie={item} />
 							</TouchableOpacity>
 						);
 					}}

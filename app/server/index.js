@@ -13,6 +13,7 @@ const { db } = require("./database/db");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({ db });
 const { User, Movie } = require("./database/models");
+const { movieData } = require("./utils/movieData");
 
 const { API_KEY, NODE_ENV } = process.env;
 
@@ -114,69 +115,9 @@ app.post("/api/search/movies", async (req, res, next) => {
 		})
 		.catch((err) => console.error("error:" + err));
 
-	const detailsRes = await Promise.all(
-		response.data.results.slice(0, 6).map(
-			async (movie) =>
-				await axios
-					.get(
-						`https://api.themoviedb.org/3/movie/${movie.id}?language=en-US`,
-						{
-							headers: {
-								Authorization: `Bearer ${API_KEY}`,
-							},
-						}
-					)
-					.then((res) => {
-						return res.data;
-					})
-					.catch((err) => {
-						return err;
-					})
-		)
-	);
+	const resData = await movieData(response.data.results);
 
-	const fullRes = await Promise.all(
-		detailsRes.map(async (movie) => {
-			let castData = [];
-			let directorData = [];
-
-			await axios
-				.get(
-					`https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`,
-					{
-						headers: {
-							Authorization: `Bearer ${API_KEY}`,
-						},
-					}
-				)
-				.then((res) => {
-					castData = res.data.cast.slice(0, 5);
-					directorData = res.data.crew.filter(
-						(person) => person.job === "Director"
-					);
-				})
-				.catch((err) => {
-					return err;
-				});
-
-			movie.year = movie.release_date.slice(0, 4);
-			let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
-				movie.runtime % 60
-			)}`;
-
-			let cast = castData.map((actor) => actor.name).join(", ");
-			director = directorData[0]?.name;
-
-			movie.runtime = runtime;
-			movie.cast = cast;
-			movie.director = director;
-
-			console.log(cast, director, directorData, movie.cast, movie.director);
-			return movie;
-		})
-	);
-
-	return res.send({ status: 200, data: fullRes });
+	return res.send({ status: 200, data: resData });
 });
 
 app.get("/api/auth/me", async function (req, res) {
@@ -197,70 +138,13 @@ app.get("/api/users/:id", async (req, res) => {
 		});
 		const json = JSON.stringify(data);
 		let user = JSON.parse(json);
-
-		const detailsRes = await Promise.all(
-			user.movies.map(
-				async (movie) =>
-					await axios
-						.get(
-							`https://api.themoviedb.org/3/movie/${movie.webID}?language=en-US`,
-							{
-								headers: {
-									Authorization: `Bearer ${API_KEY}`,
-								},
-							}
-						)
-						.then((res) => {
-							return res.data;
-						})
-						.catch((err) => {
-							return err;
-						})
-			)
-		);
-
-		const fullRes = await Promise.all(
-			detailsRes.map(async (movie) => {
-				let castData = [];
-				let directorData = [];
-
-				await axios
-					.get(
-						`https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`,
-						{
-							headers: {
-								Authorization: `Bearer ${API_KEY}`,
-							},
-						}
-					)
-					.then((res) => {
-						castData = res.data.cast.slice(0, 5);
-						directorData = res.data.crew.filter(
-							(person) => person.job === "Director"
-						);
-					})
-					.catch((err) => {
-						return err;
-					});
-
-				movie.year = movie.release_date.slice(0, 4);
-				let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
-					movie.runtime % 60
-				)}`;
-
-				let cast = castData.map((actor) => actor.name).join(", ");
-				director = directorData[0]?.name;
-
-				movie.runtime = runtime;
-				movie.cast = cast;
-				movie.director = director;
-
-				console.log(cast, director, directorData, movie.cast, movie.director);
-				return movie;
-			})
-		);
-
-		user.list = fullRes;
+		let array = user.movies.map((movie) => {
+			movie.id = movie.webID;
+			return movie;
+		});
+		const resData = await movieData(array);
+		user.list = resData;
+		console.log("user", user.list);
 		return res.send(user);
 	} catch (error) {
 		console.log(error);

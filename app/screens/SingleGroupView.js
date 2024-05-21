@@ -12,19 +12,12 @@ function SingleGroupView({ navigation, route }) {
 
 	const getUserHandler = async () => {
 		let { data } = await usersApi.getUser(user.id);
-		console.log("DATA", data);
 		setUser({ ...user, list: data.list });
 	};
-
+	console.log(user.list);
 	useEffect(() => {
 		getUserHandler();
 	}, []);
-	console.log("USER:", user.list);
-	const removeHandler = (removedMovie) => {
-		// const newArray = searchResultsData.filter(
-		// 	(movie) => movie.id !== removedMovie.id
-		// );
-	};
 
 	return (
 		<SafeAreaView>
@@ -32,17 +25,17 @@ function SingleGroupView({ navigation, route }) {
 				data={user.list}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
+					console.log(item);
 					return (
 						<TouchableOpacity
 							onPress={() =>
 								navigation.navigate("SingleMovie", {
 									key: item.webID,
 									movie: item,
-									removeHandler: removeHandler,
 								})
 							}
 						>
-							<MovieCard key={item.webIDid} movie={item} viewed={false} />
+							<MovieCard key={item.webID} movie={item} viewed={false} />
 						</TouchableOpacity>
 					);
 				}}
