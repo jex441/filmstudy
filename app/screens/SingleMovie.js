@@ -1,12 +1,19 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import {
+	Text,
+	View,
+	StyleSheet,
+	ScrollView,
+	TouchableOpacity,
+} from "react-native";
 
 import MovieCard from "./components/MovieCard";
 import Backdrop from "./components/Backdrop";
-import AppButton from "./components/Forms/AppButton";
+import BadgeButton from "./components/BadgeButton";
 import colors from "../config/colors";
 import usersApi from "../api/users";
 import { useStore } from "../store";
+
 function SingleGroupMovie({ route, navigation }) {
 	const { user } = useStore();
 	const { id, movie } = route.params;
@@ -19,10 +26,24 @@ function SingleGroupMovie({ route, navigation }) {
 				<Text style={styles.overview}>{overview}</Text>
 			</View>
 			<View style={styles.actions}>
-				<AppButton
+				<BadgeButton
 					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
-					title="Add to Watched List"
+					color={colors.medium}
+					name="check"
+					label="Mark as Watched"
 				/>
+				<BadgeButton
+					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
+					color={colors.medium}
+					name="menu"
+					label="Add to Watch List"
+				/>
+				{/* <BadgeButton
+					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
+					color={colors.medium}
+					name="close"
+					label="Remove"
+				/> */}
 			</View>
 		</ScrollView>
 	);
@@ -48,7 +69,7 @@ const styles = StyleSheet.create({
 	iconWrapper: {
 		marginHorizontal: 10,
 		textAlign: "center",
-		justifyContent: "center",
+		justifyContent: "space-between",
 		alignItems: "center",
 	},
 });
