@@ -3,7 +3,13 @@ import { useEffect } from "react";
 import { useStore } from "../store";
 import { useQuery } from "@tanstack/react-query";
 
-import { FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+	FlatList,
+	SafeAreaView,
+	View,
+	Text,
+	TouchableOpacity,
+} from "react-native";
 import MovieCard from "./components/MovieCard";
 import usersApi from "../api/users";
 

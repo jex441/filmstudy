@@ -22,22 +22,32 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function SingleGroupMovie({ route, navigation }) {
 	const [visible, setVisible] = useState(false);
+	const [errorText, setErrorText] = useState("");
 	const { user } = useStore();
 	const { id, movie } = route.params;
 	const { overview, backdrop_path, watchList, watched, rating } = movie;
-	const stars = [0, 1, 2, 3, 4];
+	const stars = [1, 2, 3, 4, 5];
 	const [userRating, setUserRating] = useState(rating || 0);
-	console.log(userRating);
+
 	const addHandler = () => {
 		setVisible(true);
 	};
+
+	const rateHandler = () => {
+		setErrorText("");
+	};
 	const submitHandler = async () => {
+		if (userRating < 1) {
+			setErrorText("You must select at least 1 star.");
+			return;
+		}
 		await usersApi.addMovie(user.id, {
 			...movie,
-			rating: userRating + 1,
+			rating: userRating,
 		});
 		setVisible(false);
 	};
+
 	return (
 		<ScrollView>
 			<Backdrop backdrop={backdrop_path} />
@@ -86,28 +96,29 @@ function SingleGroupMovie({ route, navigation }) {
 									numColumns={5}
 									keyExtractor={(key) => key.toString()}
 									renderItem={({ item, index }) => {
-										console.log(item);
-										if (index <= userRating) {
+										if (userRating <= index) {
 											return (
-												<TouchableOpacity onPress={() => setUserRating(index)}>
+												<TouchableOpacity
+													onPress={() => setUserRating(index + 1)}
+												>
 													<MaterialCommunityIcons
-														value={item}
 														style={styles.star}
 														name="star"
 														size={35}
-														color={colors.dark}
+														color={colors.light}
 													/>
 												</TouchableOpacity>
 											);
 										} else {
 											return (
-												<TouchableOpacity onPress={() => setUserRating(index)}>
+												<TouchableOpacity
+													onPress={() => setUserRating(index + 1)}
+												>
 													<MaterialCommunityIcons
-														value={item}
 														style={styles.star}
 														name="star"
 														size={35}
-														color={colors.light}
+														color={colors.dark}
 													/>
 												</TouchableOpacity>
 											);
@@ -116,6 +127,7 @@ function SingleGroupMovie({ route, navigation }) {
 								/>
 							</View>
 							<AppButton title="Submit" pressHandler={() => submitHandler()} />
+							{errorText && <Text style={styles.errorText}>{errorText}</Text>}
 						</View>
 					</Screen>
 				</Modal>
@@ -167,6 +179,10 @@ const styles = StyleSheet.create({
 		width: 50,
 		height: 50,
 		margin: 10,
+	},
+	errorText: {
+		marginTop: 40,
+		color: "red",
 	},
 });
 export default SingleGroupMovie;
