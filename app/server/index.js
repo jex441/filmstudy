@@ -156,6 +156,7 @@ app.get("/api/users/:id", async (req, res) => {
 
 app.post("/api/users/:id/movies/watched", async (req, res) => {
 	const { id, rating } = req.body;
+	console.log("rating:", rating);
 	try {
 		const movie = await Movie.findOrCreate({
 			where: { webID: id },
@@ -173,7 +174,7 @@ app.post("/api/users/:id/movies/watched", async (req, res) => {
 				webID: id,
 				watched: true,
 				watchList: true,
-				rating: 777,
+				rating: rating,
 			},
 			{ where: { UserId: user.id, MovieId: newMovie.id } }
 		);

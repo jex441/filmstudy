@@ -59,7 +59,7 @@ const movieData = async function movieData(array) {
 			movie.runtime = runtime;
 			movie.cast = cast;
 			movie.director = director;
-
+			movie.vote_average = movie.vote_average / 2;
 			return movie;
 		})
 	);

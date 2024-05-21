@@ -84,7 +84,7 @@ function MovieCard({ movie }) {
 							<Text style={styles.runtime}>{runtime}</Text>
 						</View>
 					</View>
-					{watched && <GroupMovieCard rating={rating} />}
+					{watched && <GroupMovieCard movie={movie} />}
 				</View>
 			</View>
 		</>

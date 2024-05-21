@@ -12,7 +12,8 @@ import Badges from "./Badges";
 import colors from "../../config/colors";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-function GroupMovieCard({ pickedBy, watchedOn, groupRating, ratedBy, tags }) {
+function GroupMovieCard({ movie }) {
+	const { watched, rating } = movie;
 	const stars = (n) => {
 		let array = [];
 		for (let i = 0; i < n; i++) {
@@ -35,10 +36,8 @@ function GroupMovieCard({ pickedBy, watchedOn, groupRating, ratedBy, tags }) {
 				</View>
 				<View style={styles.textContainer}>
 					<Text style={styles.text}>WATCHED</Text>
-					{/* <View style={styles.movieCardStarContainer}>
-						{stars(groupRating)}
-					</View>
-					<View>
+					<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
+					{/* <View>
 						<Text style={styles.pickedBy}>
 							Picked by {pickedBy && pickedBy.split(" ")[0]} on {watchedOn}
 						</Text>
@@ -68,6 +67,7 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		flex: 1,
 		flexDirection: "row",
+		gap: 10,
 	},
 	text: {
 		color: colors.medium,

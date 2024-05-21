@@ -12,6 +12,7 @@ const getUser = async (userID) => {
 const addMovie = async (userID, movie) => {
 	const { data } = await client.post(`/users/${userID}/movies/watched`, {
 		id: movie.id,
+		rating: movie.rating,
 	});
 	return { data: data };
 };
