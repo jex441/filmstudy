@@ -14,6 +14,7 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({ db });
 const { User, Movie } = require("./database/models");
 const { movieData } = require("./utils/movieData");
+const { User_Movie } = require("./database/models/user_movie");
 
 const { API_KEY, NODE_ENV } = process.env;
 
@@ -132,19 +133,20 @@ app.get("/api/auth/me", async function (req, res) {
 
 app.get("/api/users/:id", async (req, res) => {
 	try {
-		let data = await User.findOne({
-			where: { id: req.params.id },
-			include: { model: Movie, as: "movies" },
+		let data = await User_Movie.findAll({
+			where: { UserId: req.params.id },
 		});
 		const json = JSON.stringify(data);
-		let user = JSON.parse(json);
-		let array = user.movies.map((movie) => {
+		let movies = JSON.parse(json);
+		let array = movies.map((movie) => {
 			movie.id = movie.webID;
 			return movie;
 		});
+		console.log("->", movies);
 		const resData = await movieData(array);
+		let user = {};
 		user.list = resData;
-		console.log("user", user.list);
+		console.log("throughsky:", resData);
 		return res.send(user);
 	} catch (error) {
 		console.log(error);
@@ -152,43 +154,70 @@ app.get("/api/users/:id", async (req, res) => {
 	}
 });
 
-app.post("/api/users/:id/movies", async (req, res) => {
-	const {
-		id,
-		poster,
-		title,
-		year,
-		director,
-		actors,
-		rating,
-		runtime,
-		backdrop,
-		overview,
-	} = req.body;
+app.post("/api/users/:id/movies/watched", async (req, res) => {
+	const { id, rating } = req.body;
 	try {
 		const movie = await Movie.findOrCreate({
 			where: { webID: id },
 			defaults: {
 				webID: id,
-				// title: title,
-				// poster: poster,
-				// overview: overview,
-				// director: director[0]?.name,
-				// cast: actors[0]?.name,
-				// rating: 2,
-				// runtime: runtime,
-				// backdrop: backdrop,
-				// year: year,
 			},
 		});
 		const user = await User.findByPk(req.params.id);
-		// add movie to user, through table for rating
 		const movieData = await Movie.findOne({ where: { webID: id } });
 		const json = JSON.stringify(movieData);
 		const newMovie = JSON.parse(json);
-		console.log("here:", user);
 		await user.addMovie(newMovie.id);
+		await User_Movie.update(
+			{
+				webID: id,
+				watched: true,
+				rating: 777,
+			},
+			{ where: { UserId: user.id, MovieId: newMovie.id } }
+		);
+		return res.send({ status: 200 });
+	} catch (error) {
+		console.log(error);
+		return res.send({ status: 500, data: error });
+	}
+});
 
+app.post("/api/users/:id/movies/list", async (req, res) => {
+	const { id } = req.body;
+	try {
+		const movie = await Movie.findOrCreate({
+			where: { webID: id },
+			defaults: {
+				webID: id,
+			},
+		});
+		const user = await User.findByPk(req.params.id);
+		const movieData = await Movie.findOne({ where: { webID: id } });
+		const json = JSON.stringify(movieData);
+		const newMovie = JSON.parse(json);
+		await user.addMovie(newMovie.id);
+		await User_Movie.update(
+			{
+				watchList: true,
+				watched: false,
+			},
+			{ where: { UserId: user.id, MovieId: newMovie.id } }
+		);
+		return res.send({ status: 200 });
+	} catch (error) {
+		console.log(error);
+		return res.send({ status: 500, data: error });
+	}
+});
+
+app.delete("/api/users/:id/movies", async (req, res) => {
+	const { id } = req.body;
+	try {
+		const movie = await Movie.findOne({
+			where: { webID: id },
+		});
+		await movie.removeUser(req.params.id);
 		return res.send({ status: 200 });
 	} catch (error) {
 		console.log(error);

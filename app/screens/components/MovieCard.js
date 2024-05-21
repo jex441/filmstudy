@@ -25,6 +25,9 @@ function MovieCard({ movie }) {
 		groupRating,
 		watchedOn,
 		ratedBy,
+		watched,
+		rating,
+		watchList,
 	} = movie;
 
 	const stars = (n) => {
@@ -81,14 +84,7 @@ function MovieCard({ movie }) {
 							<Text style={styles.runtime}>{runtime}</Text>
 						</View>
 					</View>
-					{viewed && (
-						<GroupMovieCard
-							pickedBy={pickedBy}
-							watchedOn={watchedOn}
-							ratedBy={ratedBy}
-							groupRating={groupRating}
-						/>
-					)}
+					{watched && <GroupMovieCard rating={rating} />}
 				</View>
 			</View>
 		</>

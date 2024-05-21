@@ -4,6 +4,9 @@ const User_Movie = db.define("User_Movie", {
 	watched: {
 		type: DataTypes.BOOLEAN,
 	},
+	webID: {
+		type: DataTypes.INTEGER,
+	},
 	watchList: {
 		type: DataTypes.BOOLEAN,
 	},

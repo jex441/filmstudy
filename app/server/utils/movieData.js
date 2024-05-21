@@ -16,7 +16,7 @@ const movieData = async function movieData(array) {
 						}
 					)
 					.then((res) => {
-						return res.data;
+						return { ...movie, ...res.data };
 					})
 					.catch((err) => {
 						return err;
@@ -48,7 +48,7 @@ const movieData = async function movieData(array) {
 					return err;
 				});
 
-			movie.year = movie?.release_date.slice(0, 4);
+			movie.year = movie?.release_date;
 			let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
 				movie.runtime % 60
 			)}`;

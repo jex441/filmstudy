@@ -33,7 +33,9 @@ function SingleGroupMovie({ route, navigation }) {
 					label="Mark as Watched"
 				/>
 				<BadgeButton
-					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
+					pressHandler={async () =>
+						await usersApi.addMovieToWatchList(user.id, movie)
+					}
 					color={colors.dark}
 					name="menu"
 					label="Add to Watch List"
