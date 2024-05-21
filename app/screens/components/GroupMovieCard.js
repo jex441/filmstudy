@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 		color: colors.medium,
 	},
 	ratedBy: {
-		paddingTop: 4,
+		paddingTop: 5,
 		height: 25,
 	},
 	movieCardStarContainer: {
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 	},
 	movieCardStar: {
-		height: 10,
-		width: 10,
+		height: 14,
+		width: 14,
 		marginRight: 3,
 	},
 });

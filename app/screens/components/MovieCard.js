@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
 		color: colors.medium,
 	},
 	movieCardStarContainer: {
-		paddingTop: 4,
+		paddingVertical: 5,
 		flexDirection: "row",
 		justifyContent: "flex-start",
 	},
 	movieCardStar: {
-		height: 10,
-		width: 10,
+		height: 14,
+		width: 14,
 		marginRight: 3,
 	},
 });

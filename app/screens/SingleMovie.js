@@ -31,6 +31,13 @@ function SingleGroupMovie({ route, navigation }) {
 	const addHandler = () => {
 		setVisible(true);
 	};
+	const submitHandler = async () => {
+		await usersApi.addMovie(user.id, {
+			...movie,
+			rating: userRating + 1,
+		});
+		setVisible(false);
+	};
 	return (
 		<ScrollView>
 			<Backdrop backdrop={backdrop_path} />
@@ -108,15 +115,7 @@ function SingleGroupMovie({ route, navigation }) {
 									}}
 								/>
 							</View>
-							<AppButton
-								title="Submit"
-								pressHandler={async () =>
-									await usersApi.addMovie(user.id, {
-										...movie,
-										rating: userRating + 1,
-									})
-								}
-							/>
+							<AppButton title="Submit" pressHandler={() => submitHandler()} />
 						</View>
 					</Screen>
 				</Modal>
