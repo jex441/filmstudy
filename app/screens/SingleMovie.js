@@ -28,19 +28,19 @@ function SingleGroupMovie({ route, navigation }) {
 			<View style={styles.actions}>
 				<BadgeButton
 					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
-					color={colors.medium}
+					color={colors.dark}
 					name="check"
 					label="Mark as Watched"
 				/>
 				<BadgeButton
 					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
-					color={colors.medium}
+					color={colors.dark}
 					name="menu"
 					label="Add to Watch List"
 				/>
 				{/* <BadgeButton
 					pressHandler={async () => await usersApi.addMovie(user.id, movie)}
-					color={colors.medium}
+					color={colors.dark}
 					name="close"
 					label="Remove"
 				/> */}

@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import colors from "../../config/colors";
-function BadgeButton({ color, name, label }) {
+function BadgeButton({ color, name, label, pressHandler }) {
 	return (
 		<TouchableOpacity
 			style={styles.container}

@@ -186,7 +186,7 @@ app.post("/api/users/:id/movies", async (req, res) => {
 		const movieData = await Movie.findOne({ where: { webID: id } });
 		const json = JSON.stringify(movieData);
 		const newMovie = JSON.parse(json);
-		console.log("moviedata", newMovie);
+		console.log("here:", user);
 		await user.addMovie(newMovie.id);
 
 		return res.send({ status: 200 });
