@@ -34,6 +34,14 @@ function SingleGroupMovie({ route, navigation }) {
 		setVisible(true);
 	};
 
+	const checkList = () => {
+		user.list.map((userMovie) => {
+			if (movie.id === userMovie.webID) {
+				setMovie({ ...movie, ...userMovie });
+			}
+		});
+	};
+
 	const submitHandler = async () => {
 		if (userRating < 1) {
 			setErrorText("You must select at least 1 star.");
@@ -46,30 +54,34 @@ function SingleGroupMovie({ route, navigation }) {
 			})
 			.then((res) => {
 				setUser({ ...user, list: res.data });
-			});
+			})
+			.then(() =>
+				setMovie({
+					...movie,
+					watched: true,
+					watchList: true,
+					rating: userRating,
+				})
+			);
 		setVisible(false);
 	};
 
 	const addToWatchListHandler = async () => {
 		await usersApi.addMovieToWatchList(user.id, movie).then((res) => {
 			setUser({ ...user, list: res.data });
+			setMovie({ ...movie, watchList: true });
 		});
 	};
 
 	const removeFromListHandler = async () => {
 		await usersApi.removeMovie(user.id, movie).then((res) => {
 			setUser({ ...user, list: res.data });
+			setMovie({ ...movie, watched: false, watchList: false });
 		});
 	};
 
 	useEffect(() => {
-		if (!watchList) {
-			user.list.map((userMovie) => {
-				if (movie.id === userMovie.webID) {
-					setMovie({ ...movie, ...userMovie });
-				}
-			});
-		}
+		checkList();
 	}, []);
 
 	return (
