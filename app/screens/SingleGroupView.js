@@ -31,7 +31,6 @@ function SingleGroupView({ navigation, route }) {
 				data={user.list}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
-					console.log(item);
 					return (
 						<TouchableOpacity
 							onPress={() =>

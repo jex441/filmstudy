@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Text,
 	View,
@@ -21,10 +21,11 @@ import { useStore } from "../store";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function SingleGroupMovie({ route, navigation }) {
+	const { user, setUser } = useStore();
 	const [visible, setVisible] = useState(false);
 	const [errorText, setErrorText] = useState("");
-	const { user, setUser } = useStore();
-	const { id, movie } = route.params;
+	const [movie, setMovie] = useState(route.params.movie);
+	const { id } = route.params;
 	const { overview, backdrop_path, watchList, watched, rating } = movie;
 	const stars = [1, 2, 3, 4, 5];
 	const [userRating, setUserRating] = useState(rating || 0);
@@ -33,9 +34,6 @@ function SingleGroupMovie({ route, navigation }) {
 		setVisible(true);
 	};
 
-	const rateHandler = () => {
-		setErrorText("");
-	};
 	const submitHandler = async () => {
 		if (userRating < 1) {
 			setErrorText("You must select at least 1 star.");
@@ -47,11 +45,32 @@ function SingleGroupMovie({ route, navigation }) {
 				rating: userRating,
 			})
 			.then((res) => {
-				console.log("do leet code", res.data);
 				setUser({ ...user, list: res.data });
 			});
 		setVisible(false);
 	};
+
+	const addToWatchListHandler = async () => {
+		await usersApi.addMovieToWatchList(user.id, movie).then((res) => {
+			setUser({ ...user, list: res.data });
+		});
+	};
+
+	const removeFromListHandler = async () => {
+		await usersApi.removeMovie(user.id, movie).then((res) => {
+			setUser({ ...user, list: res.data });
+		});
+	};
+
+	useEffect(() => {
+		if (!watchList) {
+			user.list.map((userMovie) => {
+				if (movie.id === userMovie.webID) {
+					setMovie({ ...movie, ...userMovie });
+				}
+			});
+		}
+	}, []);
 
 	return (
 		<Screen>
@@ -71,9 +90,7 @@ function SingleGroupMovie({ route, navigation }) {
 				)}
 				{!watched && !watchList && (
 					<BadgeButton
-						pressHandler={async () =>
-							await usersApi.addMovieToWatchList(user.id, movie)
-						}
+						pressHandler={() => addToWatchListHandler()}
 						color={colors.dark}
 						name="menu"
 						label="Add to Watch List"
@@ -81,9 +98,7 @@ function SingleGroupMovie({ route, navigation }) {
 				)}
 				{watchList && (
 					<BadgeButton
-						pressHandler={async () =>
-							await usersApi.removeMovie(user.id, movie)
-						}
+						pressHandler={() => removeFromListHandler()}
 						color={colors.dark}
 						name="close"
 						label={`Remove from my list`}
