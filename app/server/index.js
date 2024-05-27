@@ -42,24 +42,20 @@ app.use(passport.session());
 
 passport.use(
 	new LocalStrategy(async function (username, password, done) {
-		await User.findOne(
-			{
-				where: { username: username },
-			},
-			function (err, user) {
-				if (err) {
-					return done(err);
-				}
-				if (!user) {
-					return done(null, false);
-				}
-				if (!user.verifyPassword(password)) {
-					return done(null, false);
-				}
-				console.log("usere", user);
-				return done(null, user);
-			}
-		);
+		const data = await User.findOne({
+			where: { username: username },
+		});
+		const json = JSON.stringify(data, null, 2);
+		const user = JSON.parse(json);
+		console.log("boom", user);
+
+		if (!user) {
+			return done(null, false);
+		}
+		if (user.password !== password) {
+			return done(null, false);
+		}
+		return done(null, user);
 	})
 );
 
@@ -98,9 +94,19 @@ app.post(
 	"/api/auth/login",
 	passport.authenticate("local", { failureRedirect: "/login" }),
 	function (req, res) {
-		res.redirect("/");
+		return res.send(req.user);
 	}
 );
+
+app.post("/api/auth/logout", (req, res) => {
+	req.logout(function (err) {
+		req.session.destroy();
+		if (err) {
+			return next(err);
+		}
+		return res.redirect("/");
+	});
+});
 
 app.post("/api/search/movies", async (req, res, next) => {
 	if (!req.body.title) return res.send(400);

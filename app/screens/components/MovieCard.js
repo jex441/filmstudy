@@ -33,8 +33,9 @@ function MovieCard({ movie }) {
 
 	const stars = (n) => {
 		let array = [];
+		let half = 0;
 		for (let i = 0; i < 5; i++) {
-			if (i <= n - 1) {
+			if (i < Math.floor(n)) {
 				array.push(
 					<MaterialCommunityIcons
 						style={styles.star}
@@ -43,6 +44,16 @@ function MovieCard({ movie }) {
 						color={colors.medium}
 					/>
 				);
+			} else if (n % 1 > 0.5 && half < 1) {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star-half-full"
+						size={16}
+						color={colors.medium}
+					/>
+				);
+				half++;
 			} else {
 				array.push(
 					<MaterialCommunityIcons
@@ -117,7 +128,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",
-		width: "30%",
+		width: "25%",
 		height: "100%",
 	},
 	movieCardImage: {
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
 	movieCardTextContainer: {
 		padding: 10,
 		textAlign: "left",
-		width: "70%",
+		width: "75%",
 	},
 	movieTextTitleContainer: {
 		justifyContent: "space-between",
@@ -151,13 +162,13 @@ const styles = StyleSheet.create({
 	},
 	director: {
 		fontSize: 12,
-		lineHeight: 20,
+		lineHeight: 18,
 		color: colors.medium,
 	},
 	actors: {
 		width: 250,
 		fontSize: 12,
-		lineHeight: 16,
+		lineHeight: 18,
 		fontWeight: 300,
 		color: colors.medium,
 	},
@@ -168,7 +179,7 @@ const styles = StyleSheet.create({
 	},
 	runtime: {
 		fontSize: 12,
-		lineHeight: 20,
+		lineHeight: 18,
 		fontWeight: 300,
 		color: colors.medium,
 	},

@@ -10,14 +10,15 @@ const me = async () => {
 	return res.data;
 };
 
-const login = async ({ username, password }) => {
+const login = async (passphrase) => {
 	const res = await client.post("/auth/login", {
-		username: username,
-		password: password,
+		username: passphrase.split("-")[0],
+		password: passphrase.split("-")[1],
 		headers: {
 			"Content-Type": "application/json",
 		},
 	});
+	console.log("ss", res.data);
 	return res.data;
 };
 
@@ -32,8 +33,18 @@ const signup = async (username, password) => {
 	return res.data;
 };
 
+const logout = async () => {
+	const res = await client.post("/auth/logout", {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	return res.data;
+};
+
 export default {
 	me,
+	logout,
 	login,
 	signup,
 };
