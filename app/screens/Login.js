@@ -27,7 +27,13 @@ function Login(props) {
 	console.log(newPassphrase);
 	return (
 		<>
-			<View style={styles.container}>
+			<ImageBackground
+				source={{
+					uri: "https://screenmusings.org/movie/blu-ray/Interstellar/images/Interstellar-070.jpg",
+				}}
+				resizeMethod="cover"
+				style={styles.container}
+			>
 				<View
 					style={{
 						width: "100%",
@@ -38,8 +44,23 @@ function Login(props) {
 					<Text style={styles.title}>FilmStudy</Text>
 					<Text style={styles.subtext}>Watch Better Movies.</Text>
 				</View>
-				<View style={{ width: "100%", justifyContent: "center" }}>
-					<Text style={{ fontSize: 18, color: colors.dark }}>Passphrase</Text>
+				<View
+					style={{
+						width: "100%",
+						justifyContent: "center",
+						backgroundColor: "#FFF",
+						padding: 20,
+						borderRadius: 20,
+					}}
+				>
+					<Text
+						style={{
+							fontSize: 18,
+							color: colors.dark,
+						}}
+					>
+						Passphrase
+					</Text>
 
 					<TextInput
 						autoCapitalize="none"
@@ -80,15 +101,16 @@ function Login(props) {
 						}}
 					/>
 				</View>
-			</View>
+			</ImageBackground>
 		</>
 	);
 }
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 70,
-		paddingVertical: 150,
+		padding: 50,
+		paddingTop: 100,
+		paddingBottom: 50,
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
