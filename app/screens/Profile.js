@@ -8,36 +8,25 @@ import LinkItem from "./components/LinkItem";
 import authApi from "../api/authApi";
 
 export default function Profile({ navigation }) {
-	const { setUser } = useStore();
-	const logoutHandler = () => {
-		const data = authApi.logout();
+	const { user, setUser } = useStore();
+	const logoutHandler = async () => {
+		const data = await authApi.logout();
+		console.log(data);
 		setUser({ isLoggedIn: false });
-		// navigation.navigate("Home");
 	};
 	return (
 		<Screen>
 			<AppListItem
-				title={"Jeffrey Wood"}
+				title={user.username}
 				subtitle={"Coder"}
 				source={require("../assets/profilephoto.jpg")}
 			/>
-			<LinkItem
-				title="My Messages"
-				source="format-list-bulleted"
-				color={colors.primary}
-				pressHandler={() => navigation.navigate("Messages")}
-			/>
-			<LinkItem
-				title="My Listings"
-				source="email"
-				color={colors.secondary}
-				pressHandler={() => navigation.navigate("MyListings")}
-			/>
+
 			<View style={{ marginTop: 40 }}>
 				<LinkItem
 					title="Logout"
 					source="logout"
-					color="#ffe66d"
+					color={colors.dark}
 					pressHandler={() => {
 						logoutHandler();
 					}}

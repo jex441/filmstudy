@@ -101,10 +101,7 @@ app.post(
 app.post("/api/auth/logout", (req, res) => {
 	req.logout(function (err) {
 		req.session.destroy();
-		if (err) {
-			return next(err);
-		}
-		return res.redirect("/");
+		return res.send({ status: 200 });
 	});
 });
 
