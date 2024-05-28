@@ -50,7 +50,6 @@ function Login(props) {
 						justifyContent: "center",
 						backgroundColor: "#FFF",
 						padding: 20,
-						borderRadius: 20,
 					}}
 				>
 					<Text
@@ -108,9 +107,8 @@ function Login(props) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 50,
 		paddingTop: 100,
-		paddingBottom: 50,
+		paddingBottom: 80,
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
