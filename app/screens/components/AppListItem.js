@@ -13,7 +13,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 export default function AppListItem({
 	title,
 	subtitle,
-	source = "../assets/chair.jpg",
+	name,
 	pressHandler,
 	renderRightActions,
 	chevrons = false,
@@ -24,14 +24,18 @@ export default function AppListItem({
 				<TouchableHighlight onPress={pressHandler} underlayColor={colors.light}>
 					<View style={styles.card}>
 						<View style={{ flexDirection: "row" }}>
-							<Image
+							<View
 								style={{
 									width: 70,
 									height: 70,
 									borderRadius: 35,
+									backgroundColor: colors.medium,
+									justifyContent: "center",
+									alignItems: "center",
 								}}
-								source={source}
-							/>
+							>
+								<MaterialCommunityIcons name={name} size={60} color={"#fff"} />
+							</View>
 							<View style={styles.text}>
 								<Text style={styles.title} numberOfLines={1}>
 									{title}

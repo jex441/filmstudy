@@ -19,6 +19,8 @@ export default function AppButton({ pressHandler, color = "primary", title }) {
 		>
 			<Text
 				style={{
+					fontSize: 18,
+					fontWeight: 500,
 					textTransform: "uppercase",
 					fontWeight: "bold",
 					color: "#FFF",

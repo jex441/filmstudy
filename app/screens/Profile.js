@@ -11,22 +11,21 @@ export default function Profile({ navigation }) {
 	const { user, setUser } = useStore();
 	const logoutHandler = async () => {
 		const data = await authApi.logout();
-		console.log(data);
 		setUser({ isLoggedIn: false });
 	};
 	return (
 		<Screen>
 			<AppListItem
-				title={user.username}
-				subtitle={"Coder"}
-				source={require("../assets/profilephoto.jpg")}
+				title={"My Passphrase:"}
+				subtitle={user.username + "-" + user.password}
+				name="account"
 			/>
 
 			<View style={{ marginTop: 40 }}>
 				<LinkItem
 					title="Logout"
 					source="logout"
-					color={colors.dark}
+					color={colors.medium}
 					pressHandler={() => {
 						logoutHandler();
 					}}

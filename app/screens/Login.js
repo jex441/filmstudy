@@ -5,6 +5,7 @@ import {
 	Button,
 	TextInput,
 	Text,
+	Modal,
 	ImageBackground,
 } from "react-native";
 import * as Yup from "yup";
@@ -18,14 +19,18 @@ import AppFormComponent from "./components/Forms/AppFormComponent";
 import colors from "../config/colors";
 import authApi from "../api/authApi";
 import AppInputText from "./components/Forms/AppInputText";
+import Screen from "./components/Screen";
 
 function Login(props) {
+	const [errorText, setErrorText] = useState("");
 	const { user, setUser } = useStore();
+	const [visible, setVisible] = useState(false);
 	const [passphrase, setPassphrase] = useState("");
 	const username = generate();
-	const password = generate();
+	let password = generate();
+	const val = Math.floor(1000 + Math.random() * 9000);
+	password = password + val;
 	const newPassphrase = username + "-" + password;
-	console.log(newPassphrase);
 	return (
 		<>
 			<ImageBackground
@@ -69,7 +74,6 @@ function Login(props) {
 					<TextInput
 						autoCapitalize="none"
 						name="Passphrase"
-						placeholder="radical-melon"
 						onChangeText={(text) => setPassphrase(text)}
 						style={{
 							marginVertical: 10,
@@ -86,9 +90,7 @@ function Login(props) {
 					<AppButton
 						title="Login"
 						pressHandler={async () => {
-							console.log(passphrase);
 							const data = await authApi.login(passphrase);
-							console.log("data:", data);
 							if (data.id) {
 								setUser({ isLoggedIn: true, ...data });
 							}
@@ -101,15 +103,54 @@ function Login(props) {
 					</View>
 					<AppButton
 						title="Continue"
-						pressHandler={async () => {
-							const data = await authApi.signup(username, password);
-							if (data.isLoggedIn) {
-								setUser(data);
-							}
+						pressHandler={() => {
+							setVisible(true);
 						}}
 					/>
 				</View>
 			</ImageBackground>
+
+			<Modal visible={visible} animationType="slide">
+				<Screen>
+					<Button title="Cancel" onPress={() => setVisible(!visible)} />
+					<View style={styles.wrapper}>
+						<Text style={styles.modalHeading}>Welcome to Film Study</Text>
+						<Text style={styles.modalText}>Your new passphrase will be:</Text>
+						<Text style={styles.newPassphrase}>{newPassphrase}</Text>
+						<Text
+							style={{
+								textAlign: "center",
+								fontSize: 16,
+								lineHeight: 24,
+								marginBottom: 20,
+							}}
+						>
+							Use this passphrase to access your account in the future.
+						</Text>
+						<Text
+							style={{
+								textAlign: "center",
+								fontSize: 16,
+								lineHeight: 24,
+								marginBottom: 20,
+							}}
+						>
+							It is a good idea to save your passphrase on your device in case
+							you forget it.
+						</Text>
+						<AppButton
+							title="Create My Account"
+							pressHandler={async () => {
+								const data = await authApi.signup(username, password);
+								if (data.isLoggedIn) {
+									setUser(data);
+								}
+							}}
+						/>
+						{errorText && <Text style={styles.errorText}>{errorText}</Text>}
+					</View>
+				</Screen>
+			</Modal>
 		</>
 	);
 }
@@ -131,7 +172,7 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		bottom: 0,
-		height: 600,
+		height: 500,
 	},
 	subtext: {
 		fontSize: 18,
@@ -146,6 +187,33 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		borderTopWidth: 2,
 		borderTopColor: "#FFF",
+	},
+	modalHeading: {
+		fontSize: 32,
+	},
+	modalText: {
+		marginTop: 20,
+		marginBottom: 20,
+		fontSize: 20,
+		textAlign: "center",
+	},
+	newPassphrase: {
+		marginTop: 40,
+		marginBottom: 40,
+		fontSize: 20,
+		borderWidth: 2,
+		paddingVertical: 10,
+		paddingHorizontal: 60,
+		borderRadius: 10,
+		borderColor: colors.medium,
+		color: colors.medium,
+	},
+	wrapper: {
+		textAlign: "center",
+		marginVertical: 150,
+		paddingHorizontal: 40,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
 export default Login;
