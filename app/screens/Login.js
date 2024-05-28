@@ -87,15 +87,25 @@ function Login(props) {
 							marginTop: 10,
 						}}
 					/>
+					{errorText && (
+						<Text style={{ color: colors.danger, fontSize: 20 }}>
+							{errorText}
+						</Text>
+					)}
+
 					<AppButton
 						title="Login"
 						pressHandler={async () => {
 							const data = await authApi.login(passphrase);
+							if (data.status === 404) {
+								setErrorText("Passphrase is invalid.");
+							}
 							if (data.id) {
 								setUser({ isLoggedIn: true, ...data });
 							}
 						}}
 					/>
+
 					<View style={styles.divider}>
 						<Text style={{ color: "#FFF", fontSize: 20, fontWeight: 500 }}>
 							Or continue without a login
@@ -147,7 +157,6 @@ function Login(props) {
 								}
 							}}
 						/>
-						{errorText && <Text style={styles.errorText}>{errorText}</Text>}
 					</View>
 				</Screen>
 			</Modal>

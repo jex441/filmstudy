@@ -47,13 +47,12 @@ passport.use(
 		});
 		const json = JSON.stringify(data, null, 2);
 		const user = JSON.parse(json);
-		console.log("boom", user);
 
 		if (!user) {
-			return done(null, false);
+			return done(null, { status: 404 });
 		}
 		if (user.password !== password) {
-			return done(null, false);
+			return done(null, { status: 404 });
 		}
 		return done(null, user);
 	})
@@ -94,7 +93,14 @@ app.post(
 	"/api/auth/login",
 	passport.authenticate("local", { failureRedirect: "/login" }),
 	function (req, res) {
-		return res.send(req.user);
+		if (req.user) {
+			console.log("test");
+			return res.send(req.user);
+		} else {
+			console.log("test");
+
+			return res.send({ data: 404 });
+		}
 	}
 );
 
