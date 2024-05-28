@@ -5,7 +5,7 @@ export default function AppButton({ pressHandler, color = "primary", title }) {
 		<TouchableOpacity
 			onPress={pressHandler}
 			style={{
-				backgroundColor: "#333",
+				backgroundColor: "#000",
 				display: "flex",
 				height: 50,
 				marginVertical: 10,

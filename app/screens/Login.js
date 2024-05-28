@@ -10,6 +10,7 @@ import {
 import * as Yup from "yup";
 import { generate, count } from "random-words";
 import { useStore } from "../store";
+import { LinearGradient } from "expo-linear-gradient";
 
 import AppButton from "./components/Forms/AppButton";
 import AppForm from "./components/Forms/AppForm";
@@ -29,11 +30,15 @@ function Login(props) {
 		<>
 			<ImageBackground
 				source={{
-					uri: "https://screenmusings.org/movie/blu-ray/Interstellar/images/Interstellar-070.jpg",
+					uri: "https://m.media-amazon.com/images/M/MV5BNjYzNjE2NDk3N15BMl5BanBnXkFtZTgwNzEyODgxMzE@._V1_.jpg",
 				}}
 				resizeMethod="cover"
 				style={styles.container}
 			>
+				<LinearGradient
+					style={styles.background}
+					colors={["rgba(0,0,0,0.0)", "rgba(0,0,0,0.8)"]}
+				/>
 				<View
 					style={{
 						width: "100%",
@@ -48,17 +53,17 @@ function Login(props) {
 					style={{
 						width: "100%",
 						justifyContent: "center",
-						backgroundColor: "#FFF",
 						padding: 20,
 					}}
 				>
 					<Text
 						style={{
-							fontSize: 18,
-							color: colors.dark,
+							fontSize: 20,
+							fontWeight: 500,
+							color: "#FFF",
 						}}
 					>
-						Passphrase
+						Enter Your Passphrase
 					</Text>
 
 					<TextInput
@@ -67,10 +72,14 @@ function Login(props) {
 						placeholder="radical-melon"
 						onChangeText={(text) => setPassphrase(text)}
 						style={{
+							marginVertical: 10,
+							fontSize: 18,
+							fontWeight: 500,
 							padding: 10,
 							borderRadius: 10,
-							borderColor: colors.medium,
-							borderWidth: 1,
+							borderColor: "#FFF",
+							color: "#FFF",
+							borderWidth: 2,
 							marginTop: 10,
 						}}
 					/>
@@ -86,7 +95,7 @@ function Login(props) {
 						}}
 					/>
 					<View style={styles.divider}>
-						<Text style={{ color: colors.dark }}>
+						<Text style={{ color: "#FFF", fontSize: 20, fontWeight: 500 }}>
 							Or continue without a login
 						</Text>
 					</View>
@@ -117,11 +126,17 @@ const styles = StyleSheet.create({
 		fontWeight: "600",
 		marginBottom: 10,
 	},
+	background: {
+		position: "absolute",
+		left: 0,
+		right: 0,
+		bottom: 0,
+		height: 600,
+	},
 	subtext: {
 		fontSize: 18,
 		fontWeight: "400",
 	},
-
 	divider: {
 		width: "100%",
 		justifyContent: "center",
@@ -129,8 +144,8 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 		paddingTop: 20,
 		marginBottom: 20,
-		borderTopWidth: 1,
-		borderTopColor: colors.medium,
+		borderTopWidth: 2,
+		borderTopColor: "#FFF",
 	},
 });
 export default Login;
