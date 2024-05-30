@@ -9,8 +9,16 @@ function HomeNavigator({ route }) {
 	return (
 		<Stack.Navigator>
 			{/* <Stack.Screen name="Groups" component={Groups} /> */}
-			<Stack.Screen name="Group" component={SingleGroupView} />
-			<Stack.Screen name="SingleMovie" component={SingleMovie} />
+			<Stack.Screen
+				name="Group"
+				options={{ title: "My Movies" }}
+				component={SingleGroupView}
+			/>
+			<Stack.Screen
+				name="SingleMovie"
+				options={{ title: "" }}
+				component={SingleMovie}
+			/>
 			{/* <Stack.Screen name="CreateNewGroup" component={CreateNewGroup} /> */}
 		</Stack.Navigator>
 	);

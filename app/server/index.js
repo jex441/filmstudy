@@ -9,11 +9,14 @@ const LocalStrategy = require("passport-local");
 require("dotenv").config();
 const session = require("express-session");
 
+const { getUserMovies } = require("./utils/getUserMovies");
+
 const { db } = require("./database/db");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const store = new SequelizeStore({ db });
 const { User, Movie } = require("./database/models");
 const { movieData } = require("./utils/movieData");
+const { User_Movie } = require("./database/models/user_movie");
 
 const { API_KEY, NODE_ENV } = process.env;
 
@@ -39,29 +42,23 @@ app.use(passport.session());
 
 passport.use(
 	new LocalStrategy(async function (username, password, done) {
-		await User.findOne(
-			{
-				where: { username: username },
-			},
-			function (err, user) {
-				if (err) {
-					return done(err);
-				}
-				if (!user) {
-					return done(null, false);
-				}
-				if (!user.verifyPassword(password)) {
-					return done(null, false);
-				}
-				console.log("usere", user);
-				return done(null, user);
-			}
-		);
+		const data = await User.findOne({
+			where: { username: username },
+		});
+		const json = JSON.stringify(data, null, 2);
+		const user = JSON.parse(json);
+
+		if (!user) {
+			return done(null, { status: 404 });
+		}
+		if (user.password !== password) {
+			return done(null, { status: 404 });
+		}
+		return done(null, user);
 	})
 );
 
 passport.serializeUser(function (user, cb) {
-	console.log(user);
 	cb(null, {
 		id: user.id,
 		username: user.username,
@@ -96,9 +93,23 @@ app.post(
 	"/api/auth/login",
 	passport.authenticate("local", { failureRedirect: "/login" }),
 	function (req, res) {
-		res.redirect("/");
+		if (req.user) {
+			console.log("test");
+			return res.send(req.user);
+		} else {
+			console.log("test");
+
+			return res.send({ data: 404 });
+		}
 	}
 );
+
+app.post("/api/auth/logout", (req, res) => {
+	req.logout(function (err) {
+		req.session.destroy();
+		return res.send({ status: 200 });
+	});
+});
 
 app.post("/api/search/movies", async (req, res, next) => {
 	if (!req.body.title) return res.send(400);
@@ -121,9 +132,7 @@ app.post("/api/search/movies", async (req, res, next) => {
 });
 
 app.get("/api/auth/me", async function (req, res) {
-	console.log("/auth/me", req.session?.passport);
 	if (req.user) {
-		console.log("req.user", req.user);
 		return res.send({ isLoggedIn: true, ...req.user });
 	} else {
 		return res.send({ isLoggedIn: false });
@@ -132,19 +141,18 @@ app.get("/api/auth/me", async function (req, res) {
 
 app.get("/api/users/:id", async (req, res) => {
 	try {
-		let data = await User.findOne({
-			where: { id: req.params.id },
-			include: { model: Movie, as: "movies" },
+		let data = await User_Movie.findAll({
+			where: { UserId: req.params.id },
 		});
 		const json = JSON.stringify(data);
-		let user = JSON.parse(json);
-		let array = user.movies.map((movie) => {
+		let movies = JSON.parse(json);
+		let array = movies.map((movie) => {
 			movie.id = movie.webID;
 			return movie;
 		});
 		const resData = await movieData(array);
+		let user = {};
 		user.list = resData;
-		console.log("user", user.list);
 		return res.send(user);
 	} catch (error) {
 		console.log(error);
@@ -152,44 +160,80 @@ app.get("/api/users/:id", async (req, res) => {
 	}
 });
 
-app.post("/api/users/:id/movies", async (req, res) => {
-	const {
-		id,
-		poster,
-		title,
-		year,
-		director,
-		actors,
-		rating,
-		runtime,
-		backdrop,
-		overview,
-	} = req.body;
+app.post("/api/users/:id/movies/watched", async (req, res) => {
+	const { id, rating } = req.body;
 	try {
 		const movie = await Movie.findOrCreate({
 			where: { webID: id },
 			defaults: {
 				webID: id,
-				// title: title,
-				// poster: poster,
-				// overview: overview,
-				// director: director[0]?.name,
-				// cast: actors[0]?.name,
-				// rating: 2,
-				// runtime: runtime,
-				// backdrop: backdrop,
-				// year: year,
+			},
+		});
+		let user = await User.findByPk(req.params.id);
+		const newMovieData = await Movie.findOne({ where: { webID: id } });
+		const json = JSON.stringify(newMovieData);
+		const newMovie = JSON.parse(json);
+		await user.addMovie(newMovie.id);
+		await User_Movie.update(
+			{
+				webID: id,
+				watched: true,
+				watchList: true,
+				rating: rating,
+			},
+			{ where: { UserId: user.id, MovieId: newMovie.id } }
+		);
+
+		const resData = await getUserMovies(req.params.id);
+		return res.send(resData);
+	} catch (error) {
+		console.log(error);
+		return res.send({ status: 500, data: error });
+	}
+});
+
+app.post("/api/users/:id/movies/list", async (req, res) => {
+	const { id } = req.body;
+	try {
+		const movie = await Movie.findOrCreate({
+			where: { webID: id },
+			defaults: {
+				webID: id,
 			},
 		});
 		const user = await User.findByPk(req.params.id);
-		// add movie to user, through table for rating
 		const movieData = await Movie.findOne({ where: { webID: id } });
 		const json = JSON.stringify(movieData);
 		const newMovie = JSON.parse(json);
-		console.log("moviedata", newMovie);
 		await user.addMovie(newMovie.id);
+		await User_Movie.update(
+			{
+				webID: id,
+				watchList: true,
+				watched: false,
+			},
+			{ where: { UserId: user.id, MovieId: newMovie.id } }
+		);
 
-		return res.send({ status: 200 });
+		const resData = await getUserMovies(req.params.id);
+		return res.send(resData);
+	} catch (error) {
+		console.log(error);
+		return res.send({ status: 500, data: error });
+	}
+});
+
+app.put("/api/users/:id/movies", async (req, res) => {
+	const { id } = req.body;
+	try {
+		const movie = await Movie.findOne({
+			where: { webID: id },
+		});
+		await movie.removeUser(req.params.id);
+
+		const resData = await getUserMovies(req.params.id);
+		console.log("resData", resData);
+		return res.send(resData);
 	} catch (error) {
 		console.log(error);
 		return res.send({ status: 500, data: error });

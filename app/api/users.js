@@ -10,23 +10,30 @@ const getUser = async (userID) => {
 };
 
 const addMovie = async (userID, movie) => {
-	console.log("movie", movie);
-	const { data } = await client.post(`/users/${userID}/movies`, {
+	const { data } = await client.post(`/users/${userID}/movies/watched`, {
 		id: movie.id,
-		poster: movie.poster_path,
-		title: movie.title,
-		year: movie.year,
-		director: movie.director,
-		actors: movie.cast,
 		rating: movie.rating,
-		runtime: movie.runtime,
-		backdrop: movie.backdrop_path,
-		overview: movie.overview,
+	});
+	return { data: data };
+};
+
+const addMovieToWatchList = async (userID, movie) => {
+	const { data } = await client.post(`/users/${userID}/movies/list`, {
+		id: movie.id,
+	});
+	return { data: data };
+};
+
+const removeMovie = async (userID, movie) => {
+	const { data } = await client.put(`/users/${userID}/movies`, {
+		id: movie.id,
 	});
 	return { data: data };
 };
 
 export default {
 	addMovie,
+	addMovieToWatchList,
+	removeMovie,
 	getUser,
 };

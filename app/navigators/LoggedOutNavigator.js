@@ -6,7 +6,11 @@ function LoggedOutNavigator(props) {
 	const Stack = createNativeStackNavigator();
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name="Login" component={Login} />
+			<Stack.Screen
+				options={{ headerShown: false }}
+				name="Login"
+				component={Login}
+			/>
 		</Stack.Navigator>
 	);
 }

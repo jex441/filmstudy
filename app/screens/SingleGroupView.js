@@ -3,7 +3,13 @@ import { useEffect } from "react";
 import { useStore } from "../store";
 import { useQuery } from "@tanstack/react-query";
 
-import { FlatList, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+	FlatList,
+	SafeAreaView,
+	View,
+	Text,
+	TouchableOpacity,
+} from "react-native";
 import MovieCard from "./components/MovieCard";
 import usersApi from "../api/users";
 
@@ -14,7 +20,7 @@ function SingleGroupView({ navigation, route }) {
 		let { data } = await usersApi.getUser(user.id);
 		setUser({ ...user, list: data.list });
 	};
-	console.log(user.list);
+
 	useEffect(() => {
 		getUserHandler();
 	}, []);
@@ -25,7 +31,6 @@ function SingleGroupView({ navigation, route }) {
 				data={user.list}
 				keyExtractor={(item) => item.id}
 				renderItem={({ item }) => {
-					console.log(item);
 					return (
 						<TouchableOpacity
 							onPress={() =>

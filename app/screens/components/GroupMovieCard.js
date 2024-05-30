@@ -10,19 +10,31 @@ import {
 } from "react-native";
 import Badges from "./Badges";
 import colors from "../../config/colors";
-
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-function GroupMovieCard({ pickedBy, watchedOn, groupRating, ratedBy, tags }) {
+function GroupMovieCard({ movie }) {
+	const { watched, rating } = movie;
 	const stars = (n) => {
 		let array = [];
-		for (let i = 0; i < n; i++) {
-			array.push(
-				<Image
-					key={i}
-					source={require("../../assets/icons/starfilled.png")}
-					style={styles.movieCardStar}
-				/>
-			);
+		for (let i = 0; i < 5; i++) {
+			if (i <= n - 1) {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.amber}
+					/>
+				);
+			} else {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.light}
+					/>
+				);
+			}
 		}
 		return array;
 	};
@@ -30,15 +42,10 @@ function GroupMovieCard({ pickedBy, watchedOn, groupRating, ratedBy, tags }) {
 	return (
 		<>
 			<View style={styles.container}>
-				<View style={styles.checkContainer}>
-					<MaterialCommunityIcons name="check" />
-				</View>
 				<View style={styles.textContainer}>
-					<Text style={styles.text}>WATCHED</Text>
-					{/* <View style={styles.movieCardStarContainer}>
-						{stars(groupRating)}
-					</View>
-					<View>
+					<Text style={styles.text}>Your Rating:</Text>
+					<View style={styles.movieCardStarContainer}>{stars(rating)}</View>
+					{/* <View>
 						<Text style={styles.pickedBy}>
 							Picked by {pickedBy && pickedBy.split(" ")[0]} on {watchedOn}
 						</Text>
@@ -68,6 +75,7 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		flex: 1,
 		flexDirection: "row",
+		gap: 10,
 	},
 	text: {
 		color: colors.medium,
@@ -86,7 +94,7 @@ const styles = StyleSheet.create({
 		color: colors.medium,
 	},
 	ratedBy: {
-		paddingTop: 4,
+		paddingTop: 5,
 		height: 25,
 	},
 	movieCardStarContainer: {
@@ -95,8 +103,8 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-start",
 	},
 	movieCardStar: {
-		height: 10,
-		width: 10,
+		height: 14,
+		width: 14,
 		marginRight: 3,
 	},
 });

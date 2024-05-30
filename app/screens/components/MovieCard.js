@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import GroupMovieCard from "./GroupMovieCard";
 import colors from "../../config/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function MovieCard({ movie }) {
 	const {
@@ -25,22 +26,47 @@ function MovieCard({ movie }) {
 		groupRating,
 		watchedOn,
 		ratedBy,
+		watched,
+		rating,
+		watchList,
 	} = movie;
 
 	const stars = (n) => {
 		let array = [];
-		for (let i = 0; i < n; i++) {
-			array.push(
-				<Image
-					key={i}
-					source={require("../../assets/icons/starfilled.png")}
-					style={styles.movieCardStar}
-				/>
-			);
+		let half = 0;
+		for (let i = 0; i < 5; i++) {
+			if (i < Math.floor(n)) {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.medium}
+					/>
+				);
+			} else if (n % 1 > 0.5 && half < 1) {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star-half-full"
+						size={16}
+						color={colors.medium}
+					/>
+				);
+				half++;
+			} else {
+				array.push(
+					<MaterialCommunityIcons
+						style={styles.star}
+						name="star"
+						size={16}
+						color={colors.light}
+					/>
+				);
+			}
 		}
 		return array;
 	};
-
 	return (
 		<>
 			<View style={styles.movieCard}>
@@ -63,8 +89,13 @@ function MovieCard({ movie }) {
 							<Text style={styles.year}>{year}</Text>
 						</View>
 					</View>
-					<View>
-						<Text style={styles.director}>{director}</Text>
+					<View style={styles.justifyBetween}>
+						<View>
+							<Text style={styles.director}>{director}</Text>
+						</View>
+						<View>
+							<Text style={styles.runtime}>{runtime}</Text>
+						</View>
 					</View>
 					{cast && (
 						<View>
@@ -77,18 +108,8 @@ function MovieCard({ movie }) {
 						<View style={styles.movieCardStarContainer}>
 							{stars(vote_average)}
 						</View>
-						<View>
-							<Text style={styles.runtime}>{runtime}</Text>
-						</View>
 					</View>
-					{viewed && (
-						<GroupMovieCard
-							pickedBy={pickedBy}
-							watchedOn={watchedOn}
-							ratedBy={ratedBy}
-							groupRating={groupRating}
-						/>
-					)}
+					{watched && <GroupMovieCard movie={movie} />}
 				</View>
 			</View>
 		</>
@@ -107,7 +128,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		alignSelf: "center",
-		width: "30%",
+		width: "25%",
 		height: "100%",
 	},
 	movieCardImage: {
@@ -117,7 +138,7 @@ const styles = StyleSheet.create({
 	movieCardTextContainer: {
 		padding: 10,
 		textAlign: "left",
-		width: "70%",
+		width: "75%",
 	},
 	movieTextTitleContainer: {
 		justifyContent: "space-between",
@@ -135,15 +156,19 @@ const styles = StyleSheet.create({
 		lineHeight: 20,
 		fontSize: 12,
 	},
+	justifyBetween: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+	},
 	director: {
 		fontSize: 12,
-		lineHeight: 20,
+		lineHeight: 18,
 		color: colors.medium,
 	},
 	actors: {
-		width: 240,
+		width: 250,
 		fontSize: 12,
-		lineHeight: 16,
+		lineHeight: 18,
 		fontWeight: 300,
 		color: colors.medium,
 	},
@@ -154,18 +179,18 @@ const styles = StyleSheet.create({
 	},
 	runtime: {
 		fontSize: 12,
-		lineHeight: 20,
+		lineHeight: 18,
 		fontWeight: 300,
 		color: colors.medium,
 	},
 	movieCardStarContainer: {
-		paddingTop: 4,
+		paddingVertical: 5,
 		flexDirection: "row",
 		justifyContent: "flex-start",
 	},
 	movieCardStar: {
-		height: 10,
-		width: 10,
+		height: 14,
+		width: 14,
 		marginRight: 3,
 	},
 });

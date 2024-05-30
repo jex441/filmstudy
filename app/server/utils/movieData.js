@@ -3,8 +3,7 @@ const axios = require("axios");
 const { API_KEY } = process.env;
 
 const movieData = async function movieData(array) {
-	console.log(array);
-	const detailsRes = await Promise.all(
+	const basicData = await Promise.all(
 		array.slice(0, 6).map(
 			async (movie) =>
 				await axios
@@ -17,7 +16,7 @@ const movieData = async function movieData(array) {
 						}
 					)
 					.then((res) => {
-						return res.data;
+						return { ...movie, ...res.data };
 					})
 					.catch((err) => {
 						return err;
@@ -25,8 +24,8 @@ const movieData = async function movieData(array) {
 		)
 	);
 
-	const fullRes = await Promise.all(
-		detailsRes.map(async (movie) => {
+	const fullData = await Promise.all(
+		basicData.map(async (movie) => {
 			let castData = [];
 			let directorData = [];
 
@@ -49,7 +48,7 @@ const movieData = async function movieData(array) {
 					return err;
 				});
 
-			movie.year = movie?.release_date.slice(0, 4);
+			movie.year = movie?.release_date && movie?.release_date.slice(0, 4);
 			let runtime = `${Math.floor(movie.runtime / 60)} HR ${Math.floor(
 				movie.runtime % 60
 			)}`;
@@ -60,11 +59,11 @@ const movieData = async function movieData(array) {
 			movie.runtime = runtime;
 			movie.cast = cast;
 			movie.director = director;
-
+			movie.vote_average = movie.vote_average / 2;
 			return movie;
 		})
 	);
-	return fullRes;
+	return fullData;
 };
 
 module.exports = { movieData };
