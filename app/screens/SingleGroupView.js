@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import MovieCard from "./components/MovieCard";
 import usersApi from "../api/users";
+import colors from "../config/colors";
 
 function SingleGroupView({ navigation, route }) {
 	const { user, setUser } = useStore();
@@ -27,6 +28,27 @@ function SingleGroupView({ navigation, route }) {
 
 	return (
 		<SafeAreaView>
+			{!user?.list?.length && (
+				<View
+					style={{
+						height: "100%",
+						width: "100%",
+						alignItems: "center",
+						paddingTop: 100,
+					}}
+				>
+					<Text
+						style={{
+							color: colors.medium,
+							textAlign: "center",
+							lineHeight: 32,
+							fontSize: 22,
+						}}
+					>
+						Your list is empty.
+					</Text>
+				</View>
+			)}
 			<FlatList
 				data={user.list}
 				keyExtractor={(item) => item.id}
