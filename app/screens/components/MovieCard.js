@@ -38,6 +38,7 @@ function MovieCard({ movie }) {
 			if (i < Math.floor(n)) {
 				array.push(
 					<MaterialCommunityIcons
+						key={i}
 						style={styles.star}
 						name="star"
 						size={16}
@@ -47,6 +48,7 @@ function MovieCard({ movie }) {
 			} else if (n % 1 > 0.5 && half < 1) {
 				array.push(
 					<MaterialCommunityIcons
+						key={i}
 						style={styles.star}
 						name="star-half-full"
 						size={16}
@@ -57,6 +59,7 @@ function MovieCard({ movie }) {
 			} else {
 				array.push(
 					<MaterialCommunityIcons
+						key={i}
 						style={styles.star}
 						name="star"
 						size={16}

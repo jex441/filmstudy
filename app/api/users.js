@@ -31,7 +31,17 @@ const removeMovie = async (userID, movie) => {
 	return { data: data };
 };
 
+const getRecs = async (userID) => {
+	const { data } = await client.get(`/users/${userID}/recs`, {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	return data;
+};
+
 export default {
+	getRecs,
 	addMovie,
 	addMovieToWatchList,
 	removeMovie,

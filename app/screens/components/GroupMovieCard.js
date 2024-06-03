@@ -19,6 +19,7 @@ function GroupMovieCard({ movie }) {
 			if (i <= n - 1) {
 				array.push(
 					<MaterialCommunityIcons
+						key={i}
 						style={styles.star}
 						name="star"
 						size={16}
@@ -28,6 +29,7 @@ function GroupMovieCard({ movie }) {
 			} else {
 				array.push(
 					<MaterialCommunityIcons
+						key={i}
 						style={styles.star}
 						name="star"
 						size={16}

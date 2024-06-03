@@ -35,11 +35,12 @@ function SingleGroupMovie({ route, navigation }) {
 	};
 
 	const checkList = () => {
-		user.list.map((userMovie) => {
-			if (movie.id === userMovie.webID) {
-				setMovie({ ...movie, ...userMovie });
-			}
-		});
+		user?.list &&
+			user?.list.map((userMovie) => {
+				if (movie.id === userMovie.webID) {
+					setMovie({ ...movie, ...userMovie });
+				}
+			});
 	};
 
 	const submitHandler = async () => {

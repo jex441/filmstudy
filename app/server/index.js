@@ -232,12 +232,41 @@ app.put("/api/users/:id/movies", async (req, res) => {
 		await movie.removeUser(req.params.id);
 
 		const resData = await getUserMovies(req.params.id);
-		console.log("resData", resData);
 		return res.send(resData);
 	} catch (error) {
 		console.log(error);
 		return res.send({ status: 500, data: error });
 	}
+});
+
+app.get("/api/users/:id/recs", async (req, res, next) => {
+	const movies = await getUserMovies(req.params.id);
+	const idx =
+		movies.length > 1 ? Math.floor(Math.random() * (movies.length - 0)) : 0;
+
+	// A very rudimentary reccomendations feature. Selects one from a user's list and returns similar movies based on TMDB's similar call.
+	// Room for improvement here, to only search ones a user rated highly, or to return suggestions based on multiple user picks instead of just one.
+
+	if (!movies.length) {
+		return res.send({ status: 200, data: [] });
+	}
+
+	const url = `https://api.themoviedb.org/3/movie/${movies[idx].webID}/similar?language=en-US&page=1`;
+
+	const response = await axios
+		.get(url, {
+			headers: {
+				Authorization: `Bearer ${API_KEY}`,
+			},
+		})
+		.then((res) => {
+			return res;
+		})
+		.catch((err) => console.error("error:" + err));
+
+	const resData = await movieData(response.data.results);
+
+	return res.send({ status: 200, data: resData });
 });
 
 // Connect to database
