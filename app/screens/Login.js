@@ -171,11 +171,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
-	title: {
-		fontSize: 42,
-		fontWeight: "600",
-		marginBottom: 10,
-	},
 	background: {
 		position: "absolute",
 		left: 0,
@@ -183,7 +178,14 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		height: 500,
 	},
+	title: {
+		color: "#FFF",
+		fontSize: 46,
+		fontWeight: "600",
+		marginBottom: 6,
+	},
 	subtext: {
+		color: "#FFF",
 		fontSize: 18,
 		fontWeight: "400",
 	},

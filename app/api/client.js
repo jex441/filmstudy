@@ -1,5 +1,6 @@
 import axios from "axios";
+import settings from "../config/settings";
 
 export default client = axios.create({
-	baseURL: "http://localhost:9001/api",
+	baseURL: settings.apiUrl,
 });
