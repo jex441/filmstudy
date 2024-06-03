@@ -1,11 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { FlatList, SafeAreaView, TouchableOpacity, Text } from "react-native";
+import {
+	FlatList,
+	SafeAreaView,
+	View,
+	TouchableOpacity,
+	Text,
+} from "react-native";
 
 import MovieCard from "./components/MovieCard";
 import SearchBar from "./components/SearchBar";
 import movies from "../api/movies";
 import usersApi from "../api/users";
+import colors from "../config/colors";
 import { useStore } from "../store";
 
 function Search({ navigation, route }) {
@@ -41,6 +48,27 @@ function Search({ navigation, route }) {
 	return (
 		<SafeAreaView>
 			<SearchBar searchValue={searchValue} changeHandler={changeHandler} />
+			{!searchResultsData.length && (
+				<View
+					style={{
+						height: "100%",
+						width: "100%",
+						alignItems: "center",
+						paddingTop: 100,
+					}}
+				>
+					<Text
+						style={{
+							color: colors.medium,
+							textAlign: "center",
+							lineHeight: 32,
+							fontSize: 22,
+						}}
+					>
+						Add movies to your list to receive reccomendations.
+					</Text>
+				</View>
+			)}
 			{searching ? (
 				<Text>Loading</Text>
 			) : (
