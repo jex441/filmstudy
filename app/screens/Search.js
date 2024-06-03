@@ -5,8 +5,11 @@ import { FlatList, SafeAreaView, TouchableOpacity, Text } from "react-native";
 import MovieCard from "./components/MovieCard";
 import SearchBar from "./components/SearchBar";
 import movies from "../api/movies";
+import usersApi from "../api/users";
+import { useStore } from "../store";
 
 function Search({ navigation, route }) {
+	const { user } = useStore();
 	const [searchValue, setSearchValue] = useState("");
 	const [searchResultsData, setSearchResultsData] = useState([]);
 	const [searching, setSearching] = useState(false);
@@ -22,9 +25,17 @@ function Search({ navigation, route }) {
 		setSearchResultsData(data);
 	};
 
+	const getRecsHandler = async () => {
+		setSearching(true);
+		const { data } = await usersApi.getRecs(user.id);
+		setSearching(false);
+		setSearchResultsData(data);
+	};
+
 	useEffect(() => {
+		// If the user has not input any search value, reccomendations based on their list are rendered instead
 		if (searchValue?.length > 0) searchMoviesHandler(searchValue);
-		else setSearchResultsData([]);
+		else getRecsHandler();
 	}, [searchValue]);
 
 	return (
