@@ -1,13 +1,5 @@
 import React from "react";
-import {
-	Text,
-	View,
-	StyleSheet,
-	Button,
-	FlatList,
-	Image,
-	SafeAreaView,
-} from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import GroupMovieCard from "./GroupMovieCard";
 import colors from "../../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -21,14 +13,7 @@ function MovieCard({ movie }) {
 		cast,
 		runtime,
 		vote_average,
-		viewed,
-		pickedBy,
-		groupRating,
-		watchedOn,
-		ratedBy,
 		watched,
-		rating,
-		watchList,
 	} = movie;
 
 	const stars = (n) => {

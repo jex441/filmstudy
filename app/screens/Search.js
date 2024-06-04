@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	Text,
 } from "react-native";
+import LottieView from "lottie-react-native";
 
 import MovieCard from "./components/MovieCard";
 import SearchBar from "./components/SearchBar";
@@ -70,7 +71,24 @@ function Search({ navigation, route }) {
 				</View>
 			)}
 			{searching ? (
-				<Text>Loading</Text>
+				<View
+					style={{
+						height: "100%",
+						width: "100%",
+						alignItems: "center",
+						paddingTop: 100,
+					}}
+				>
+					<LottieView
+						autoPlay
+						loop={true}
+						style={{
+							height: 200,
+							width: 250,
+						}}
+						source={require("../animations/loader.json")}
+					/>
+				</View>
 			) : (
 				<FlatList
 					data={searchResultsData}
