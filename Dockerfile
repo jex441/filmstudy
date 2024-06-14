@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of your application code to the working directory
 COPY . .
 
-EXPOSE 9001
+EXPOSE 7979
 
 # Start server 
 CMD ["npm", "start"]
