@@ -34,9 +34,7 @@ function Login(props) {
 	return (
 		<>
 			<ImageBackground
-				source={{
-					uri: "https://m.media-amazon.com/images/M/MV5BNjYzNjE2NDk3N15BMl5BanBnXkFtZTgwNzEyODgxMzE@._V1_.jpg",
-				}}
+				source={require("../assets/login.jpg")}
 				resizeMethod="cover"
 				style={styles.container}
 			>
