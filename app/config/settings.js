@@ -5,10 +5,10 @@ const settings = {
 		apiUrl: "http://localhost:9001/api",
 	},
 	staging: {
-		apiUrl: "http://localhost:9001//api",
+		apiUrl: "http://localhost:9001/api",
 	},
 	prod: {
-		apiUrl: "http://localhost:9001//api",
+		apiUrl: "https://filmstudy-production.up.railway.app/api",
 	},
 };
 
