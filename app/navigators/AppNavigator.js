@@ -2,7 +2,6 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import data from "../../data";
 import HomeNavigator from "./HomeNavigator";
 import SearchNavigator from "./SearchNavigator";
 import AccountNavigator from "./AccountNavigator";
@@ -27,7 +26,6 @@ function AppNavigator(props) {
 					),
 				}}
 				component={HomeNavigator}
-				initialParams={{ data: data }}
 			/>
 			<Tab.Screen
 				name="Search"
@@ -43,7 +41,6 @@ function AppNavigator(props) {
 					),
 				}}
 				component={SearchNavigator}
-				initialParams={{ data: data }}
 			/>
 			<Tab.Screen
 				name="Account"
@@ -59,7 +56,6 @@ function AppNavigator(props) {
 					),
 				}}
 				component={AccountNavigator}
-				initialParams={{ data: data }}
 			/>
 		</Tab.Navigator>
 	);
