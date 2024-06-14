@@ -1,15 +1,12 @@
 import { Text, TouchableOpacity } from "react-native";
+import colors from "../../../config/colors";
 
-export default function AppButton({
-	pressHandler,
-	color = "colors.dark",
-	title,
-}) {
+export default function AppButton({ pressHandler, color = "dark", title }) {
 	return (
 		<TouchableOpacity
 			onPress={pressHandler}
 			style={{
-				backgroundColor: color,
+				backgroundColor: colors[color],
 				display: "flex",
 				height: 50,
 				marginVertical: 10,
