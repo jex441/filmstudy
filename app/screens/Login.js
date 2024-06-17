@@ -38,6 +38,8 @@ function Login(props) {
 		2: require("../assets/login2.jpg"),
 		3: require("../assets/login3.jpg"),
 		4: require("../assets/login4.jpg"),
+		5: require("../assets/login5.jpg"),
+		6: require("../assets/login6.jpg"),
 	};
 	const random = () => {
 		return Math.floor(Math.random() * 5);
