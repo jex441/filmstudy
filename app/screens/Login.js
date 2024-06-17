@@ -34,12 +34,13 @@ function Login(props) {
 
 	const images = {
 		0: require("../assets/login0.jpg"),
-		1: require("../assets/login2.jpg"),
-		2: require("../assets/login3.jpg"),
-		3: require("../assets/login4.jpg"),
+		1: require("../assets/login1.jpg"),
+		2: require("../assets/login2.jpg"),
+		3: require("../assets/login3.jpg"),
+		4: require("../assets/login4.jpg"),
 	};
 	const random = () => {
-		return Math.floor(Math.random() * 4);
+		return Math.floor(Math.random() * 2);
 	};
 	const int = random();
 

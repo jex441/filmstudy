@@ -2,7 +2,7 @@ import { Constants } from "expo-constants";
 
 const settings = {
 	dev: {
-		apiUrl: "http://localhost:9001/api",
+		apiUrl: "https://filmstudy-production.up.railway.app/api",
 	},
 	staging: {
 		apiUrl: "http://localhost:9001/api",
