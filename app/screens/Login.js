@@ -31,10 +31,22 @@ function Login(props) {
 	const val = Math.floor(1000 + Math.random() * 9000);
 	password = password + val;
 	const newPassphrase = username + "-" + password;
+
+	const images = {
+		0: require("../assets/login0.jpg"),
+		1: require("../assets/login2.jpg"),
+		2: require("../assets/login3.jpg"),
+		3: require("../assets/login4.jpg"),
+	};
+	const random = () => {
+		return Math.floor(Math.random() * 4);
+	};
+	const int = random();
+
 	return (
 		<>
 			<ImageBackground
-				source={require("../assets/login.jpg")}
+				source={images[int]}
 				resizeMethod="cover"
 				style={styles.container}
 			>
