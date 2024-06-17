@@ -7,7 +7,11 @@ function AccountNavigator(props) {
 	const Stack = createNativeStackNavigator();
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name="Profile" component={Profile} />
+			<Stack.Screen
+				name="Profile"
+				options={{ title: "Account" }}
+				component={Profile}
+			/>
 		</Stack.Navigator>
 	);
 }

@@ -8,7 +8,6 @@ function HomeNavigator({ route }) {
 	const Stack = createNativeStackNavigator();
 	return (
 		<Stack.Navigator>
-			{/* <Stack.Screen name="Groups" component={Groups} /> */}
 			<Stack.Screen
 				name="Group"
 				options={{ title: "My Movies" }}
@@ -19,7 +18,6 @@ function HomeNavigator({ route }) {
 				options={{ title: "" }}
 				component={SingleMovie}
 			/>
-			{/* <Stack.Screen name="CreateNewGroup" component={CreateNewGroup} /> */}
 		</Stack.Navigator>
 	);
 }
