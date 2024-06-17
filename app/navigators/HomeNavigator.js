@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import SingleGroupView from "../screens/SingleGroupView";
+import UserList from "../screens/UserList";
 import SingleMovie from "../screens/SingleMovie";
 
 function HomeNavigator({ route }) {
@@ -11,7 +11,7 @@ function HomeNavigator({ route }) {
 			<Stack.Screen
 				name="Group"
 				options={{ title: "My Movies" }}
-				component={SingleGroupView}
+				component={UserList}
 			/>
 			<Stack.Screen
 				name="SingleMovie"

@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
 import { useStore } from "../store";
-import { useQuery } from "@tanstack/react-query";
 
 import {
 	FlatList,
@@ -14,7 +13,7 @@ import MovieCard from "./components/MovieCard";
 import usersApi from "../api/users";
 import colors from "../config/colors";
 
-function SingleGroupView({ navigation, route }) {
+function UserList({ navigation, route }) {
 	const { user, setUser } = useStore();
 
 	const getUserHandler = async () => {
@@ -70,4 +69,4 @@ function SingleGroupView({ navigation, route }) {
 		</SafeAreaView>
 	);
 }
-export default SingleGroupView;
+export default UserList;
