@@ -40,7 +40,7 @@ function Login(props) {
 		4: require("../assets/login4.jpg"),
 	};
 	const random = () => {
-		return Math.floor(Math.random() * 2);
+		return Math.floor(Math.random() * 5);
 	};
 	const int = random();
 
