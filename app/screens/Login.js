@@ -232,8 +232,8 @@ const styles = StyleSheet.create({
 	},
 	wrapper: {
 		textAlign: "center",
-		marginVertical: 150,
-		paddingHorizontal: 40,
+		marginVertical: 100,
+		paddingHorizontal: 20,
 		justifyContent: "center",
 		alignItems: "center",
 	},

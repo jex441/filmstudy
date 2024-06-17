@@ -10,6 +10,6 @@ const styles = StyleSheet.create({
 		width: "100%",
 		paddingTop: Constants.statusBarHeight,
 		flex: 1,
-		backgroundColor: "#f9f9f9",
+		backgroundColor: "",
 	},
 });
