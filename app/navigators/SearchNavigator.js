@@ -8,8 +8,16 @@ function HomeNavigator(props) {
 	const Stack = createNativeStackNavigator();
 	return (
 		<Stack.Navigator>
-			<Stack.Screen name="SearchMovies" component={Search} />
-			<Stack.Screen name="SingleMovie" component={SingleMovie} />
+			<Stack.Screen
+				name="SearchMovies"
+				options={{ title: "Search" }}
+				component={Search}
+			/>
+			<Stack.Screen
+				name="SingleMovie"
+				options={{ title: "" }}
+				component={SingleMovie}
+			/>
 		</Stack.Navigator>
 	);
 }
