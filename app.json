@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "FilmStudy",
-    "slug": "FilmStudy",
+    "name": "FilmStudy: Watch Better Movies",
+    "slug": "FilmStudySlug",
     "owner": "jex441",
     "version": "1.0.0",
     "orientation": "portrait",

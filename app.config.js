@@ -1,13 +1,13 @@
 module.exports = {
-	name: "filmstudy",
+	name: "Film Study: Watch Better Movies.",
 	owner: "jex441",
 	expo: {
 		ios: {
-			bundleIdentifier: "com.jex441.filmstudy",
+			bundleIdentifier: "com.jex441.filmstudy1234",
 		},
 		extra: {
 			eas: {
-				projectId: "67d2a46b-79cd-4ea4-bfdb-87f227617320",
+				projectId: "d5f1e027-9301-4f4f-8932-b5067fa31e2c",
 			},
 		},
 	},
