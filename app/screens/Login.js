@@ -33,23 +33,23 @@ function Login(props) {
 	const newPassphrase = username + "-" + password;
 
 	const images = {
-		0: require("../assets/login0.jpg"),
-		1: require("../assets/login1.jpg"),
-		2: require("../assets/login2.jpg"),
-		3: require("../assets/login3.jpg"),
-		4: require("../assets/login4.jpg"),
-		5: require("../assets/login5.jpg"),
-		6: require("../assets/login6.jpg"),
+		0: "https://image.tmdb.org/t/p/original/cRR7N8WzOkby776y6I4vW0GQXrJ.jpg",
+		1: "https://image.tmdb.org/t/p/original/3gmreIMvzQgd1q4hsiUN5ADV88W.jpg",
+		2: "https://image.tmdb.org/t/p/original/qqHQsStV6exghCM7zbObuYBiYxw.jpg",
+		3: "https://image.tmdb.org/t/p/original/w5IDXtifKntw0ajv2co7jFlTQDM.jpg",
+		4: "https://image.tmdb.org/t/p/original/aAStHDJgD97k4g4Zf0NLqbAmrvZ.jpg",
+		5: "https://image.tmdb.org/t/p/original/1oaLxMtdn47TWdaty8BwdU4oXhV.jpg",
 	};
+
 	const random = () => {
-		return Math.floor(Math.random() * 6);
+		return Math.floor(Math.random() * 5);
 	};
 	const int = random();
 
 	return (
 		<>
 			<ImageBackground
-				source={images[int]}
+				source={{ uri: images[int] }}
 				resizeMethod="cover"
 				style={styles.container}
 			>
